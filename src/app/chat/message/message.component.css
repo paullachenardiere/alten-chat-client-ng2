@@ -1,0 +1,14 @@
+.chatMessage {
+  width: 50em;
+  margin-bottom: 1em;
+  background-color: #f4f4f4;
+  border: 2px solid #a7a7a7;
+  border-radius: 5px;
+}
+.avatar {
+  opacity: 0.3;
+}
+
+.message-upper {
+  border-bottom: 1px solid #a7a7a7;
+}

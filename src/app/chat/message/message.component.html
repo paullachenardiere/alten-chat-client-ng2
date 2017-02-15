@@ -1,0 +1,20 @@
+<div class="container chatMessage">
+  <div class="row message-upper">
+    <div class="col-md-4 ">
+      <img src="./assets/paul.jpg" alt="..." class="img-rounded img-responsive avatar ">
+      <!--<img src="http://placehold.it/100x100" class="img-rounded img-responsive ">-->
+    </div>
+    <div class="col-md-6">
+      <p>{{message.message}}</p>
+    </div>
+  </div>
+  <div class="row message-lower">
+    <button type="button" class="btn btn-link" (click)="deleteMessage(message.id);">
+      <span class="glyphicon glyphicon-trash glyph"></span>
+    </button>
+    <button type="button" class="btn btn-link" (click)="replyMessage(message.id);">
+      <span class="glyphicon glyphicon-trash glyph"></span>
+    </button>
+  </div>
+</div>
+
