@@ -1,20 +1,36 @@
 <div class="container chatMessage">
   <div class="row message-upper">
-    <div class="col-md-4 ">
-      <img src="./assets/paul.jpg" alt="..." class="img-rounded img-responsive avatar ">
+    <div class="col-md-1 avatar-box">
+      <img src="./assets/paul.jpg" alt="..." class="img-circle img-responsive avatar">
       <!--<img src="http://placehold.it/100x100" class="img-rounded img-responsive ">-->
     </div>
     <div class="col-md-6">
       <p>{{message.message}}</p>
+      <p>{{message.timestamp | date:'M/d/yyyy HH:mm'}}</p>
+      <!--<pre>{{message | json}}</pre>-->
     </div>
   </div>
   <div class="row message-lower">
-    <button type="button" class="btn btn-link" (click)="deleteMessage(message.id);">
+    <p>{{message.replies.length}}</p>
+    <button type="button" class="btn btn-link float-right" (click)="deleteMessage(message.id);">
       <span class="glyphicon glyphicon-trash glyph"></span>
     </button>
-    <button type="button" class="btn btn-link" (click)="replyMessage(message.id);">
-      <span class="glyphicon glyphicon-trash glyph"></span>
+    <button type="button" class="btn btn-link float-right" (click)="onClickEdit(message)">
+      <span class="glyphicon glyphicon-pencil glyph"></span>
+    </button>
+    <button type="button" class="btn btn-link float-right" (click)="onClickReply(message.id, 1)">
+      <span class="glyphicon glyphicon-plus glyph"></span>
     </button>
   </div>
+<div class="container" *ngIf="edit">
+  <form ngForm>
+      <textarea class="form-control container" rows="5" name="message" required [(ngModel)]="messageContainer.message"
+                placeholder="add comment..."></textarea>
+    <button type="submit" class="btn btn-success btn-sm" [disabled]="!messageContainer.message"
+            (click)="replyMessage(message.id);">
+      <span class="glyphicon glyphicon-send glyph"></span> Post
+    </button>
+  </form>
+</div>
 </div>
 
