@@ -1,36 +1,14 @@
+<chat-message *ngFor="let message of messages" [message]="message"></chat-message>
+
 <div class="container">
-
-  <!--<pre>{{messages | json}}</pre>-->
-
-    <chat-message *ngFor="let message of messages" [message]="message"></chat-message>
-    <!--<div class="row message-upper">-->
-    <!--<div class="col-md-4 ">-->
-    <!--<img src="./assets/paul.jpg" alt="..." class="img-rounded img-responsive avatar ">-->
-    <!--&lt;!&ndash;<img src="http://placehold.it/100x100" class="img-rounded img-responsive ">&ndash;&gt;-->
-    <!--</div>-->
-    <!--<div class="col-md-6">-->
-    <!--<p>{{message.message}}</p>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--<div class="row message-lower">-->
-    <!--<button type="button" class="btn btn-link" (click)="deleteMessage(message.id);">-->
-    <!--<span class="glyphicon glyphicon-trash glyph"></span>-->
-    <!--</button>-->
-    <!--<button type="button" class="btn btn-link" (click)="replyMessage(message.id);">-->
-    <!--<span class="glyphicon glyphicon-trash glyph"></span>-->
-    <!--</button>-->
-    <!--</div>-->
-    <!--</div>-->
-  </div>
-  <div class="container">
-    <form ngForm>
-      <textarea class="form-control container" rows="5" name="message" required [(ngModel)]="newMessage.message"
+  <form ngForm>
+      <textarea class="form-control" rows="3" name="message" required [(ngModel)]="newMessage.message"
                 placeholder="add comment..."></textarea>
-      <button type="submit" class="btn btn-success btn-sm" [disabled]="!newMessage.message"
-              (click)="postMessage(newMessage);">
-        <span class="glyphicon glyphicon-send glyph"></span> Post
-      </button>
-    </form>
-  </div>
+    <button type="submit" class="btn btn-success btn-sm float-right " [disabled]="!newMessage.message"
+            (click)="postMessage(newMessage);">
+      <span class="glyphicon glyphicon-send glyph"></span> Post
+    </button>
+  </form>
+</div>
 
 
