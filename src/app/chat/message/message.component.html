@@ -1,39 +1,90 @@
-<div class="container chatMessage">
+<div class="chatMessage">
   <div class="row message-upper">
-    <div class="col-md-1 avatar-box">
-      <img src="./assets/paul.jpg" alt="..." class="img-circle img-responsive avatar">
+    <div class="col-md-2 col-sm-2 col-xs-2 avatar-box">
+      <img (click)="userModal.show()" src="./assets/paul.jpg" alt="..." class="img-circle avatar">
+      <p class="status">online <span><div class="statusIndicator"></div></span></p>
       <!--<img src="http://placehold.it/100x100" class="img-rounded img-responsive ">-->
     </div>
-    <div class="col-md-6">
-      <div class="row ">
-        <h5 class="float-right">{{message.timestamp | date:'M/d/yyyy HH:mm'}}</h5>
+    <div class="col-md-10 col-sm-10 col-xs-10">
+      <div class="row">
+        <!--<div class="timestamp"><b class="bold float-left">Username</b>-->
+        <!--<span class="float-right">{{message.timestamp | date:'M/d/yyyy HH:mm'}}</span>-->
+        <!--</div>-->
+        <h5 class="timestamp"><strong>{{message.user.userName}}</strong>
+          <!--<small class="float-right">{{message.timestamp | date:'M/d/yyyy HH:mm'}}</small>-->
+          <small class="float-right">{{message.timestamp | amTimeAgo}}</small>
+        </h5>
       </div>
-      <p>{{message.message}}</p>
       <!--<pre>{{message | json}}</pre>-->
+      <div class="row">
+
+        <p class="message">{{message.message}}</p>
+      </div>
+
     </div>
   </div>
   <div class="row message-lower">
-    <!--<p>{{message.replies.length}}</p>-->
-    <button type="button" class="btn btn-link float-right"
-            (click)="deleteMessage(message.id);">
-      <span class="glyphicon glyphicon-trash glyph"></span>
-    </button>
-    <button type="button" class="btn btn-link float-right" (click)="onClickEdit(message)">
-      <span class="glyphicon glyphicon-pencil glyph"></span>
-    </button>
-    <button type="button" class="btn btn-link float-right" (click)="onClickReply(message.id, 1)">
-      <span class="glyphicon glyphicon-plus glyph"></span>
-    </button>
+
+    <div name="button-bar" class="float-right button-bar">
+
+      <button type="button" class="btn btn-link" ngClass="{{message.replies.length > 1 ? 'replies' : ''}}">
+        <span class="">{{message.replies.length}} {{message.replies.length > 1 ? 'comments' : 'comment'}} </span>
+        <span class="glyphicon glyphicon-chevron-up glyph" aria-label="none"></span>
+      </button>
+
+      <button type="button" class="btn btn-link" (click)="onClickReply(message.id, 1)">
+        <span class="glyphicon glyphicon-plus glyph" aria-label="reply message"></span>
+      </button>
+      <button type="button" class="btn btn-link" (click)="onClickEdit(message)">
+        <span class="glyphicon glyphicon-pencil glyph" aria-label="edit message"></span>
+      </button>
+      <button type="button"
+              class="btn btn-link"
+              (click)="deleteModal.show()">
+        <span class="glyphicon glyphicon-trash glyph red" aria-label="delete message"></span>
+      </button>
+    </div>
   </div>
+
+  <!--<chat-message class="" *ngFor="let message of messages" [message]="message"></chat-message>-->
+
   <div class="" *ngIf="edit">
     <form ngForm>
-      <textarea class="form-control" rows="3" name="message" required [(ngModel)]="messageContainer.message"
-                placeholder="add reply..."></textarea>
+      <textarea class="form-control" rows="3" name="message" required
+                [(ngModel)]="messageContainer.message"
+                placeholder="add reply..."
+                (keyup.enter)="onEnter(message.id)">
+
+      </textarea>
       <button type="submit" class="btn btn-success btn-sm" [disabled]="!messageContainer.message"
               (click)="replyMessage(message.id);">
-        <span class="glyphicon glyphicon-send glyph"></span> Post
+        <span class="glyphicon glyphicon-send glyph"></span> {{edit ? 'Done' : 'Post'}}
       </button>
     </form>
   </div>
 </div>
+<!--MODALS-->
+<delete-modal>
+  <div class="delete-modal-header">
+    <h4>Confirm delete <span class="glyphicon glyphicon-trash glyph red" aria-label="none"></span></h4>
+  </div>
+  <div class="delete-modal-footer">
+    <button type="button" class="btn btn-default" (click)="deleteModal.hide()">Cancel</button>
+    <button type="button" class="btn btn-danger" (click)="deleteMessage(message.id); deleteModal.hide()">Delete</button>
+  </div>
+</delete-modal>
 
+<user-modal>
+  <div class="user-modal-header">
+    <img (click)="userModal.show()" src="./assets/paul.jpg" alt="..." class="img-circle">
+    <p class="status">online <span><div class="statusIndicator"></div></span></p>
+  </div>
+  <div class="user-modal-body">Information about the user
+    <p>Member since 12-02-2017</p>
+    <p>13 posts</p>
+    <p>Recieved 4 replies</p>
+    <p>4 replies</p>
+  </div>
+  <div class="user-modal-footer">
+  </div>
+</user-modal>

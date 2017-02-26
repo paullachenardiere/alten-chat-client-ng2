@@ -44,7 +44,7 @@ export class ChatComponent implements OnInit {
    * Implemented in DOM
    */
   postMessage() {
-    this.newMessage.userId = 1;
+    this.newMessage.userId = 2;
     this.chatService.postMessage(this.newMessage).subscribe(
       message => {
         return this.updateMessageInDOM(message);
@@ -54,7 +54,20 @@ export class ChatComponent implements OnInit {
 
   updateMessageInDOM(message): Array<Message> {
     console.log("message", message);
+
     this.messages.push(message);
+    if(!this.messages || this.messages === undefined || this.messages.length === 0) return null;
+
+    this.messages.sort((a: any, b: any) => {
+      if (a.timestamp < b.timestamp) {
+        return -1;
+      } else if (a.timestamp > b.timestamp) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+
     this.newMessage = new Message();
     return this.messages;
   };

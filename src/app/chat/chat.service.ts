@@ -33,7 +33,6 @@ export class ChatService {
     return this.http.get(this.baseUrl, this.headersGet)
       .map(function (response: Response) {
         let res: Message[] = response.json();
-        console.log("response Service", res);
         return res;
       })
       .catch(this.handleError);
@@ -43,7 +42,6 @@ export class ChatService {
     return this.http.get(this.baseUrl + id, this.headersGet)
       .map(function (response: Response) {
         let res = response.json();
-        console.log("response Service", res);
         return res;
       })
       .catch(this.handleError);
@@ -55,7 +53,6 @@ export class ChatService {
       .map(
         res => {
           let data = this.extractData(res);
-          console.log("DATA", data);
           return data;
         })
       .catch(this.handleError);
@@ -67,7 +64,6 @@ export class ChatService {
       .map(
         res => {
           let data = this.extractData(res);
-          console.log("DATA", data);
           return data;
         })
       .catch(this.handleError);
@@ -84,7 +80,6 @@ export class ChatService {
   deleteMessage(id: number): Observable<Response> {
     return this.http.delete(this.baseUrl + id)
       .map(res => {
-        console.log("res", res);
         return res
       })
       .catch(this.handleError)

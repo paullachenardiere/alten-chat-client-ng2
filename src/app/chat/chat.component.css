@@ -2,3 +2,9 @@
 .float-right {
   float: right;
 }
+.space-container {
+  height: 7em;
+}
+textarea {
+  resize: vertical;
+}

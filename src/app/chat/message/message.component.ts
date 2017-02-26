@@ -1,16 +1,24 @@
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {Message} from "../model/Message";
 import {ChatService} from "../chat.service";
 import {ChatComponent} from "../chat.component";
+import {DeleteModalComponent} from "../modals/deleteModal.component";
+import {UserModalComponent} from "../modals/userModal.component";
 
 
 @Component({
   selector: 'chat-message',
   inputs: ['message'],
   templateUrl: 'message.component.html',
-  styleUrls: ['message.component.css']
+  styleUrls: ['message.component.css','../chat.component.css']
 })
 export class MessageComponent {
+
+  @ViewChild(DeleteModalComponent)
+  public readonly deleteModal: DeleteModalComponent;
+  @ViewChild(UserModalComponent)
+  public readonly userModal: UserModalComponent;
+
   public message: Message;
   private messages: any;
   public edit = false;
@@ -19,7 +27,6 @@ export class MessageComponent {
   constructor(public chatService: ChatService, public chatComponent: ChatComponent) {
     this.chatComponent = chatComponent;
   }
-
 
   replyMessage(id: number) {
     this.messageContainer.userId = 1;
@@ -30,16 +37,17 @@ export class MessageComponent {
         for (let i = 0; i < this.chatComponent.messages.length; i++) {
           if (this.chatComponent.messages[i].id === message.id) {
             this.chatComponent.messages.splice(i, 1);
-            this.chatComponent.messages.push(message);
+            // this.chatComponent.messages.push(message);
             break;
           }
         }
-
+        this.chatComponent.updateMessageInDOM(message);
 
         return this.chatComponent.messages;
       },
       error => this.chatComponent.errorMessage = <any>error);
   }
+
 
   /**
    * Implemented in DOM
@@ -50,12 +58,8 @@ export class MessageComponent {
 
     obs.subscribe(
       result => {
-
-        console.log("result res res", result);
         for (let i = 0; i < this.chatComponent.messages.length; i++) {
-          console.log("iteration ", i);
           if (this.chatComponent.messages[i].id === id) {
-            console.log("match id", id);
             this.chatComponent.messages.splice(i, 1);
           }
         }
@@ -66,6 +70,10 @@ export class MessageComponent {
       error => this.chatComponent.errorMessage = <any>error
     )
 
+  }
+
+  onEnter(id: number) {
+    console.log("onEnter", id)
   }
 
   onClickEdit(message) {
@@ -86,3 +94,4 @@ export class MessageComponent {
 
   }
 }
+

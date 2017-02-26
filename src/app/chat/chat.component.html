@@ -1,14 +1,23 @@
-<chat-message *ngFor="let message of messages" [message]="message"></chat-message>
 
-<div class="container">
-  <form ngForm>
+<div class="col-md-3 col-sm-3"></div>
+<div class="col-md-6 col-sm-6 col-xs-12" >
+<chat-message class="" *ngFor="let message of messages" [message]="message"></chat-message>
+  <form class=" " ngForm>
       <textarea class="form-control" rows="3" name="message" required [(ngModel)]="newMessage.message"
-                placeholder="add comment..."></textarea>
+                placeholder="add comment...">
+      </textarea>
     <button type="submit" class="btn btn-success btn-sm float-right " [disabled]="!newMessage.message"
             (click)="postMessage(newMessage);">
       <span class="glyphicon glyphicon-send glyph"></span> Post
     </button>
   </form>
+<div class="space-container"></div>
 </div>
+<div class="col-md-3 col-sm-3"></div>
+
+
+
+
+
 
 
