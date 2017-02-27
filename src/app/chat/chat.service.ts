@@ -16,6 +16,7 @@ import "rxjs/add/operator/publish";
 import 'rxjs/add/operator/toPromise';
 
 import {Message} from "./model/Message";
+import {MessagePost} from "./model/MessagePost";
 
 
 @Injectable()
@@ -48,6 +49,7 @@ export class ChatService {
   }
 
   postMessage(message: Message): Observable<Message> {
+    console.log('postMessage', message);
     let options = new RequestOptions({headers: this.headersPost});
     return this.http.post(this.baseUrl, message, options)
       .map(
@@ -69,11 +71,21 @@ export class ChatService {
       .catch(this.handleError);
   }
 
-  editMessage(message: Message): Observable<Response> {
-
+  //FIXME Bad solution with 'any'. Need to control the types better in the earlier chain.
+  editMessage(message: any): Observable<Response> {
+    let messagePost: MessagePost = new MessagePost();
+    messagePost.userId = message.user ? message.user.userId : message.userId;
+    messagePost.id = message.id;
+    messagePost.message = message.message;
+    console.log('edit message', messagePost);
     let options = new RequestOptions({headers: this.headersPost});
-    return this.http.put(this.baseUrl, message, options)
-      .map(this.extractData)
+    return this.http.put(this.baseUrl, messagePost, options)
+      .map(
+        res => {
+          let data = this.extractData(res);
+          console.log("Response edit message",data);
+          return data;
+        })
       .catch(this.handleError);
   }
 

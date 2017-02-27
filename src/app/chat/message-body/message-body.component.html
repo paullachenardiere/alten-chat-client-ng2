@@ -1,0 +1,72 @@
+<div class="row message-upper">
+  <div class="col-md-2 col-sm-2 col-xs-2 avatar-box">
+    <img (click)="userModal.show()" ngClass="{{message.parentId ? 'img-responsive' : ''}}" src="./assets/paul.jpg" alt="..." class="img-circle avatar">
+    <p class="status">online <span><div class="statusIndicator"></div></span></p>
+    <!--<img src="http://placehold.it/100x100" class="img-rounded img-responsive ">-->
+  </div>
+  <div class="col-md-10 col-sm-10 col-xs-10">
+    <div class="row">
+      <h5 class="timestamp"><strong>{{message.user.userName}}</strong>
+        <small class="float-right">{{message.timestamp | amTimeAgo}}</small>
+      </h5>
+    </div>
+    <!--<pre>{{message | json}}</pre>-->
+    <div class="row">
+      <p class="message">{{message.message}}</p>
+    </div>
+
+  </div>
+</div>
+<div class="row message-lower" *ngIf="!message.parentId">
+  <div name="button-bar" class="float-right button-bar">
+    <button type="button" class="btn btn-link"
+            *ngIf="message && message.replies"
+            (click)="onClickShowReplies()"
+            ngClass="{{message.replies.length > 1 ? 'replies' : ''}}">
+      <span>{{message.replies.length}} {{message.replies.length > 1 ? 'comments' : 'comment'}} </span>
+      <span *ngIf="message.replies.length > 1">
+        <span *ngIf="!showReplies" class="glyphicon glyphicon-chevron-up glyph" aria-label="none"></span>
+        <span *ngIf="showReplies" class="glyphicon glyphicon-chevron-down glyph" aria-label="none"></span>
+      </span>
+    </button>
+    <button type="button" class="btn btn-link" (click)="onClickReply(message.id, 1)">
+      <span class="glyphicon glyphicon-plus glyph" aria-label="reply message"></span>
+    </button>
+    <button type="button" class="btn btn-link" (click)="onClickEdit(message)">
+      <span class="glyphicon glyphicon-pencil glyph" aria-label="edit message"></span>
+    </button>
+    <button type="button"
+            class="btn btn-link"
+            (click)="deleteModal.show()">
+      <span class="glyphicon glyphicon-trash glyph red" aria-label="delete message"></span>
+    </button>
+  </div>
+</div>
+
+
+<!--MODALS-->
+<delete-modal>
+  <div class="delete-modal-header">
+    <h4>Confirm delete <span class="glyphicon glyphicon-trash glyph red" aria-label="none"></span></h4>
+  </div>
+  <div class="delete-modal-footer">
+    <button type="button" class="btn btn-default" (click)="deleteModal.hide()">Cancel</button>
+    <button type="button" class="btn btn-danger" (click)="deleteMessage(message.id); deleteModal.hide()">Delete</button>
+  </div>
+</delete-modal>
+
+<!--MODALS-->
+<user-modal>
+  <div class="user-modal-header">
+    <img (click)="userModal.show()" src="./assets/paul.jpg" alt="..." class="img-circle">
+    <p class="status">online <span><div class="statusIndicator"></div></span></p>
+  </div>
+  <div class="user-modal-body">Information about the user
+    <p>Member since 12-02-2017</p>
+    <p>13 posts</p>
+    <p>Recieved 4 replies</p>
+    <p>4 replies</p>
+  </div>
+  <div class="user-modal-footer">
+  </div>
+</user-modal>

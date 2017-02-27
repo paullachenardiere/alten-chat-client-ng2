@@ -1,14 +1,12 @@
 .chatMessage {
   margin-bottom: 0.5em;
-  border: 2px solid #b1b1b1;
+  border: 1px solid #b1b1b1;
   border-radius: 7px;
   padding-left: 15px;
   padding-right: 15px;
 }
 
 .avatar-box {
-  /*border-right: 1px dotted #a7a7a7;*/
-
 }
 
 .avatar {
@@ -77,9 +75,7 @@
 
 .replies {
   background-color: rgba(166, 207, 236, 0.41);
-  border-radius: 4px;
-  /*height: 22px;*/
-  /*color: #7e7e7e;*/
+  border-radius: 13px;
 }
 
 .replies:hover {
@@ -114,4 +110,9 @@
 
 .no-padding {
   padding: 0;
+}
+
+.repliesContainer {
+  margin-left: 25px;
+  margin-right: 25px;
 }

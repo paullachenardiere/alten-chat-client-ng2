@@ -15,6 +15,7 @@ import {MessageComponent} from "./chat/message/message.component";
 import {ModalComponent} from "./chat/modals/modal.component";
 import {DeleteModalComponent} from "./chat/modals/deleteModal.component";
 import {UserModalComponent} from "./chat/modals/userModal.component";
+import {MessageBodyComponent} from './chat/message-body/message-body.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import {UserModalComponent} from "./chat/modals/userModal.component";
     EventFilteringComponent,
     ModalComponent,
     DeleteModalComponent,
-    UserModalComponent
+    UserModalComponent,
+    MessageBodyComponent
   ],
   imports: [
     BrowserModule,
