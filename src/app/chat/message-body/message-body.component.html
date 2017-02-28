@@ -1,6 +1,7 @@
 <div class="row message-upper">
   <div class="col-md-2 col-sm-2 col-xs-2 avatar-box">
-    <img (click)="userModal.show()" ngClass="{{message.parentId ? 'img-responsive center-block' : ''}}" src="./assets/paul.jpg"
+    <img (click)="userModal.show()" ngClass="{{message.parentId ? 'img-responsive center-block' : ''}}"
+         src="./assets/paul.jpg"
          alt="..." class="img-circle avatar">
     <p class="status">online <span><div class="statusIndicator"></div></span></p>
     <!--<img src="http://placehold.it/100x100" class="img-rounded img-responsive ">-->
@@ -16,7 +17,9 @@
       <p class="message">{{!viewFullMessage ? message.message.substring(0,150)+'...' : ''}}<span
         *ngIf="viewFullMessage">{{message.message}}</span>
         <span>
-          <button (click)="viewMessage()" *ngIf="message.message.length > 150" class="btn btn-link float-right">{{!viewFullMessage ? 'view...' : '...less'}}</button>
+          <button (click)="viewMessage()" *ngIf="message.message.length > 150" class="btn btn-link float-right">
+            {{!viewFullMessage ? 'view...' : '...less'}}
+          </button>
         </span>
       </p>
     </div>
@@ -64,8 +67,12 @@
 <!--MODALS-->
 <user-modal>
   <div class="user-modal-header">
-    <img (click)="userModal.show()" src="./assets/paul.jpg" alt="..." class="img-circle">
-    <p class="status">online <span><div class="statusIndicator"></div></span></p>
+
+
+      <img (click)="userModal.show()" src="./assets/paul.jpg" alt="..." class="img-circle">
+      <p class="status">online <span><div class="statusIndicator"></div></span></p>
+
+
   </div>
   <div class="user-modal-body">Information about the user
     <p>Member since 12-02-2017</p>

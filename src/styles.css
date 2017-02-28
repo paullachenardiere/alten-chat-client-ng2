@@ -16,5 +16,5 @@ html {
 }
 .modal-backdrop {
   /*transition: background 1s ease!important;*/
-  background: rgba(0, 0, 0, 0.7)!important;
+  background: rgba(0, 0, 0, 0.6)!important;
 }
