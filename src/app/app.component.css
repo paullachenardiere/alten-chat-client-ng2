@@ -1,4 +1,6 @@
 app-modal {
   background: rgba(0,0,0,0.6);
 }
-
+.chat-background {
+  background-color: aliceblue;
+}

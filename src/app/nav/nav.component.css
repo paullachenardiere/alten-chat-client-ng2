@@ -1,3 +1,17 @@
 .navbar {
   background-color: #404040;
 }
+
+.settings span {
+  font-size: 30px;
+  line-height: 0;
+  top: 7px;
+}
+.settings {
+  height: 18px;
+}
+.no-padding {
+  padding: 0;
+}
+
+

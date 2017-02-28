@@ -8,7 +8,21 @@
 textarea {
   resize: vertical;
 }
-.delete-message {
-  transition: all 0.2s ease-out;
-  opacity: 0;
+/*.delete-message {*/
+  /*transition: all 1s ease-out;*/
+  /*opacity: 0;*/
+  /*height: 1em;*/
+  /*overflow: hidden;*/
+  /*!*transition: height 2s ease-out;*!*/
+  /*!*height: 0.1em;*!*/
+/*}*/
+
+chat-message {
+
 }
+
+/*.chatMessage.delete-message {*/
+  /*transition: height 2s ease-out;*/
+  /*height: 0.01em;*/
+  /*overflow: hidden;*/
+/*}*/

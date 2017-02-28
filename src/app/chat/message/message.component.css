@@ -1,10 +1,45 @@
 .chatMessage {
-  margin-bottom: 0.5em;
+  transition: all 1s ease-out;
+  background-color: #ffffff;
+  opacity: 0;
+  /*height: 0;*/
+  overflow: hidden;
+  margin-bottom: 0;
   border: 1px solid #b1b1b1;
   border-radius: 7px;
   padding-left: 15px;
   padding-right: 15px;
 }
+
+.chatMessage.show {
+  transition: all 0.4s ease-out;
+  opacity: 1;
+  height: inherit;
+  /*height: 7.4em;*/
+  margin-bottom: 0.5em;
+  /*width: inherit;*/
+  /*height: 7.4em;*/
+  /*overflow: auto;*/
+}
+
+.chatMessage.show.expand {
+  box-shadow: 1px 1px 3px rgb(156, 156, 156);
+  background-color: #f7f7f7;
+  /*height: inherit;*/
+}
+
+/*.chatMessage.show.expand > message-body.messageRow {*/
+  /*height: inherit!important;*/
+/*}*/
+
+/*.delete-message.chatMessage{*/
+/*transition: all 0.4s ease-out;*/
+/*opacity: 0;*/
+/*height: 0em;*/
+/*overflow: hidden;*/
+/*transition: height 2s ease-out;*/
+/*height: 0.1em;*/
+/*}*/
 
 .avatar-box {
 }
@@ -59,12 +94,25 @@
   border-bottom: 1px dotted #a7a7a7;
 }
 
+.messageRow {
+  /*height: 2.8em;*/
+}
+
+.messageRow  {
+  /*overflow: hidden;*/
+  /*text-overflow: ellipsis;*/
+}
+
+/*.messageRow p {*/
+  /*text-overflow: ellipsis;*/
+/*}*/
+
 .message-lower {
   background-color: #f9f9f9;
   border-bottom-left-radius: 7px;
   border-bottom-right-radius: 7px;
   height: 25px;
-  opacity: 0.5;
+  opacity: 0.6;
   transition: opacity 0.1s ease-out;
 
 }
@@ -85,7 +133,7 @@
 
 }
 
-.chatMessage:hover > .message-lower {
+.message-lower:hover {
   transition: opacity ease-out;
   opacity: 1;
 
@@ -115,4 +163,12 @@
 .repliesContainer {
   margin-left: 25px;
   margin-right: 25px;
+}
+
+.form-control {
+  margin-top: 10px;
+}
+.submit-btn {
+  margin-top: 5px;
+  margin-bottom: 5px;
 }

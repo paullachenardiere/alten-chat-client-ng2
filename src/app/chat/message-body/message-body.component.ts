@@ -22,6 +22,7 @@ export class MessageBodyComponent {
   public edit = false;
   public showReplies = false;
   public errorMessage: any;
+  public viewFullMessage: boolean = false;
 
   @Input() messageReplies: Message[];
 
@@ -33,6 +34,15 @@ export class MessageBodyComponent {
         console.log('messageReplies is defined', this.messageReplies);
     }
 
+  }
+
+  viewMessage() {
+    this.viewFullMessage = !this.viewFullMessage;
+    // document.getElementById("myDetails");
+
+    // let messageElement = document.getElementById('text');
+    // console.log("Message id", id,messageElement);
+    // messageElement.open = true;
   }
 
   onClickReply(parentId, userId) {

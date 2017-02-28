@@ -1,8 +1,7 @@
-import {Component, ViewChild, Renderer} from '@angular/core';
+import {Component, Renderer} from '@angular/core';
 import {Message} from "../model/Message";
 import {ChatService} from "../chat.service";
 import {ChatComponent} from "../chat.component";
-import {ElementRef} from '@angular/core';
 declare let $: any;
 
 
@@ -62,7 +61,6 @@ export class MessageComponent {
           }
         }
         this.chatComponent.updateMessageInDOM(message);
-
         return this.chatComponent.messages;
       },
       error => this.chatComponent.errorMessage = <any>error);
@@ -84,10 +82,11 @@ export class MessageComponent {
             let chatMessage = document.getElementById(this.chatComponent.messages[i].id.toString());
             console.log("chatMessage element",parent);
 
-            $(chatMessage).addClass('delete-message');
+            $(chatMessage).removeClass('show');
+            // $(chatMessage).addClass('delete-message');
             let timeoutId = setTimeout(() => {
             this.chatComponent.messages.splice(i, 1);
-            }, 200);
+            }, 1000);
           }
         }
         return this.chatComponent.messages;
@@ -104,6 +103,7 @@ export class MessageComponent {
   }
 
   onEnter(id: number) {
+    this.submit(id);
     console.log("onEnter", id)
   }
 
