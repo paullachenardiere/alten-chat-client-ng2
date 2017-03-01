@@ -14,11 +14,12 @@
     </div>
     <!--<pre>{{message | json}}</pre>-->
     <div class="row messageRow">
-      <p class="message">{{!viewFullMessage ? message.message.substring(0,150)+'...' : ''}}<span
-        *ngIf="viewFullMessage">{{message.message}}</span>
+      <p class="message">{{!viewFullMessage ? message.message.substring(0,150) : ''}}
+        <span *ngIf="!viewFullMessage && message.message.length > 150">...</span>
+        <span *ngIf="viewFullMessage">{{message.message}}</span>
         <span>
           <button (click)="viewMessage()" *ngIf="message.message.length > 150" class="btn btn-link float-right">
-            {{!viewFullMessage ? 'view...' : '...less'}}
+            {{!viewFullMessage ? 'more...' : 'less'}}
           </button>
         </span>
       </p>
@@ -69,8 +70,8 @@
   <div class="user-modal-header">
 
 
-      <img (click)="userModal.show()" src="./assets/paul.jpg" alt="..." class="img-circle">
-      <p class="status">online <span><div class="statusIndicator"></div></span></p>
+    <img (click)="userModal.show()" src="./assets/paul.jpg" alt="..." class="img-circle">
+    <p class="status">online <span><div class="statusIndicator"></div></span></p>
 
 
   </div>

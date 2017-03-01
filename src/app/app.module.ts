@@ -6,7 +6,6 @@ import {MomentModule} from "angular2-moment/moment.module";
 
 import {AppComponent} from './app.component';
 import {EventFilteringComponent} from './event_filtering.component';
-import {ChatService} from './chat/chat.service';
 import {ChatComponent} from './chat/chat.component';
 import {FooterComponent} from './footer/footer.component';
 import {NavComponent} from './nav/nav.component';
@@ -16,6 +15,9 @@ import {ModalComponent} from "./chat/modals/modal.component";
 import {DeleteModalComponent} from "./chat/modals/deleteModal.component";
 import {UserModalComponent} from "./chat/modals/userModal.component";
 import {MessageBodyComponent} from './chat/message-body/message-body.component';
+
+import {ChatService} from './services/chat.service';
+import {UserService} from "./services/user.service";
 
 @NgModule({
   declarations: [
@@ -37,8 +39,9 @@ import {MessageBodyComponent} from './chat/message-body/message-body.component';
     HttpModule,
     MomentModule
   ],
-  providers: [ChatService],
+  providers: [ChatService, UserService],
   bootstrap: [AppComponent]
 })
+
 export class AppModule {
 }

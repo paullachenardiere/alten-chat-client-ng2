@@ -15,14 +15,16 @@ import 'rxjs/add/operator/switchMap'
 import "rxjs/add/operator/publish";
 import 'rxjs/add/operator/toPromise';
 
-import {Message} from "./model/Message";
-import {MessagePost} from "./model/MessagePost";
+import {Message} from "../chat/model/Message";
+import {MessagePost} from "../chat/model/MessagePost";
 
 
 @Injectable()
 export class ChatService {
 
-  private baseUrl: string = "http://localhost:8080/altenchat/";
+  private baseUrl: string = "/api";
+
+  // private baseUrl: string = "http://localhost:8080/altenchat/";
   private headersGet = new Headers({'Accept': 'application/json'});
   private headersPost = new Headers({'Content-Type': 'application/json'});
 
@@ -98,7 +100,6 @@ export class ChatService {
 
   }
 
-
   editReplyMessage(message: Message, id: number): Observable<Response> {
     let options = new RequestOptions({headers: this.headersPost});
     return this.http.put(this.baseUrl + '{' + id + '}', message, options)
@@ -115,6 +116,7 @@ export class ChatService {
 
 
   private handleError(error: Response | any): Observable<any> {
+    alert(error);
     return Observable.throw(error || 'Server error');
   }
 

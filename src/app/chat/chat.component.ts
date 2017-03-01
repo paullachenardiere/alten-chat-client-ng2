@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Observable} from "rxjs";
-import {ChatService} from "./chat.service";
+import {ChatService} from "../services/chat.service";
 import {Message} from "./model/Message";
 
 @Component({

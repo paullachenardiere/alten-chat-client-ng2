@@ -1,6 +1,6 @@
 import {Component, Renderer} from '@angular/core';
 import {Message} from "../model/Message";
-import {ChatService} from "../chat.service";
+import {ChatService} from "../../services/chat.service";
 import {ChatComponent} from "../chat.component";
 declare let $: any;
 
@@ -23,21 +23,23 @@ export class MessageComponent {
 
   // @ViewChild('someVar') el:ElementRef;
 
-  constructor(public chatService: ChatService, public chatComponent: ChatComponent,private rd: Renderer) {
+  constructor(public chatService: ChatService, public chatComponent: ChatComponent, private rd: Renderer) {
     this.chatComponent = chatComponent;
   }
 
 
   submit(id: number) {
-    if (this.edit) {
-      console.log('Submit', this.messageContainer);
-      this.editMessage(this.messageContainer)
-    } else {
-      this.replyMessage(id);
+    if (this.messageContainer.message.length > 0) {
+      if (this.edit) {
+        console.log('Submit', this.messageContainer);
+        this.editMessage(this.messageContainer)
+      } else {
+        this.replyMessage(id);
+      }
     }
   }
 
-  editMessage (message: Message) {
+  editMessage(message: Message) {
     this.chatService.editMessage(message).subscribe(
       message => {
         this.toggleInput = false;
@@ -80,12 +82,12 @@ export class MessageComponent {
           if (this.chatComponent.messages[i].id === id) {
 
             let chatMessage = document.getElementById(this.chatComponent.messages[i].id.toString());
-            console.log("chatMessage element",parent);
+            console.log("chatMessage element", parent);
 
             $(chatMessage).removeClass('show');
             // $(chatMessage).addClass('delete-message');
             let timeoutId = setTimeout(() => {
-            this.chatComponent.messages.splice(i, 1);
+              this.chatComponent.messages.splice(i, 1);
             }, 1000);
           }
         }
