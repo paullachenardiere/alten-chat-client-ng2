@@ -29,7 +29,7 @@
 }
 
 /*.chatMessage.show.expand > message-body.messageRow {*/
-  /*height: inherit!important;*/
+/*height: inherit!important;*/
 /*}*/
 
 /*.delete-message.chatMessage{*/
@@ -98,13 +98,13 @@
   /*height: 2.8em;*/
 }
 
-.messageRow  {
+.messageRow {
   /*overflow: hidden;*/
   /*text-overflow: ellipsis;*/
 }
 
 /*.messageRow p {*/
-  /*text-overflow: ellipsis;*/
+/*text-overflow: ellipsis;*/
 /*}*/
 
 .message-lower {
@@ -123,7 +123,12 @@
 
 .replies {
   background-color: rgba(166, 207, 236, 0.41);
-  border-radius: 13px;
+  border-bottom-left-radius: 13px;
+  border-bottom-right-radius: 13px;
+}
+
+.replies > .comments {
+  padding-left: 4px;
 }
 
 .replies:hover {
@@ -168,6 +173,7 @@
 .form-control {
   margin-top: 10px;
 }
+
 .submit-btn {
   margin-top: 5px;
   margin-bottom: 5px;

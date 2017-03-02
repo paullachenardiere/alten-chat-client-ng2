@@ -1,8 +1,4 @@
 body {
-
-  /*padding-top: 0rem;*/
-  /*margin-bottom: 60px;*/
-  /*transition:  background 1.2s ease!important;*/
 }
 
 html {
@@ -15,6 +11,5 @@ html {
   text-align: center;
 }
 .modal-backdrop {
-  /*transition: background 1s ease!important;*/
   background: rgba(0, 0, 0, 0.6)!important;
 }
