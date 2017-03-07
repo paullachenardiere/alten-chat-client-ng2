@@ -1,8 +1,22 @@
 {
   "/api/*": {
-    "target": "http://localhost:8080/altenchat/",
+    "target": "http://localhost:8080",
     "secure": false,
-    "logLevel": "debug",
-    "pathRewrite": {"^/api" : ""}
+    "ws": true,
+    "pathRewrite": {
+      "^/api": ""
+    },
+    "logLevel": "debug"
+  },
+  "/socket/*": {
+    "target": "ws://ws.localhost:8080/chat",
+    "secure": false,
+    "ws": true,
+    "pathRewrite": {
+      "^/socket": ""
+    },
+    "logLevel": "debug"
   }
 }
+
+

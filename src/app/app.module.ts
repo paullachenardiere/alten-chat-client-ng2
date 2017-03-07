@@ -18,6 +18,7 @@ import {MessageBodyComponent} from './chat/message-body/message-body.component';
 
 import {ChatService} from './services/chat.service';
 import {UserService} from "./services/user.service";
+import {WebSocketService} from "./services/webSocket.service";
 
 @NgModule({
   declarations: [
@@ -39,7 +40,7 @@ import {UserService} from "./services/user.service";
     HttpModule,
     MomentModule
   ],
-  providers: [ChatService, UserService],
+  providers: [ChatService, WebSocketService, UserService],
   bootstrap: [AppComponent]
 })
 

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Observable} from "rxjs";
 import {ChatService} from "../services/chat.service";
 import {Message} from "./model/Message";
@@ -8,26 +8,48 @@ import {Message} from "./model/Message";
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css'],
 })
-export class ChatComponent implements OnInit {
+export class ChatComponent implements OnInit, OnDestroy {
   public messages: Message[] = [];
   public message: Message;
   public newMessage: Message = new Message();
   public errorMessage: any;
   public data: Observable<Array<any>>;
+  public useSockets: boolean = true;
+  connection;
 
   constructor(public chatService: ChatService) {
   }
 
+
   ngOnInit(): void {
-    this.getAllMessages();
+
+    if (this.useSockets) {
+      this.getAllMessages();
+      // this.getAllMessagesSocket();
+    } else {
+      // this.getAllMessages();
+    }
+    console.log('ngOnInit() ',this.connection);
   }
 
+  ngOnDestroy() {
+    console.log('ngOnDestroy() ',this.connection);
+    this.connection.unsubscribe();
+  }
 
   /**
    * Implemented in DOM
    */
+
   getAllMessages() {
     this.chatService.getAllMessages().subscribe(
+      messages => this.messages = messages,
+      error => this.errorMessage = <any>error
+    );
+  }
+
+  getAllMessagesSocket() {
+    this.connection = this.chatService.getAllMessagesSocket().subscribe(
       messages => this.messages = messages,
       error => this.errorMessage = <any>error
     );
@@ -40,10 +62,25 @@ export class ChatComponent implements OnInit {
     );
   }
 
+  postMessage() {
+    // this.postMessageRest();
+    // if (this.useSockets) {
+    //   this.postMessageSocket();
+    // } else {
+      this.postMessageRest();
+    // }
+  }
+
+  postMessageSocket() {
+    this.newMessage.userId = 2;
+    this.chatService.postMessageSocket(this.newMessage);
+  }
+
+
   /**
    * Implemented in DOM
    */
-  postMessage() {
+  postMessageRest() {
     this.newMessage.userId = 2;
     this.chatService.postMessage(this.newMessage).subscribe(
       message => {
@@ -56,7 +93,7 @@ export class ChatComponent implements OnInit {
     console.log("message", message);
 
     this.messages.push(message);
-    if(!this.messages || this.messages === undefined || this.messages.length === 0) return null;
+    if (!this.messages || this.messages === undefined || this.messages.length === 0) return null;
 
     this.messages.sort((a: any, b: any) => {
       if (a.timestamp < b.timestamp) {
