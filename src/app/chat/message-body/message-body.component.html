@@ -6,14 +6,14 @@
     <p class="status">online <span><div class="statusIndicator"></div></span></p>
     <!--<img src="http://placehold.it/100x100" class="img-rounded img-responsive ">-->
   </div>
-  <div class="col-md-10 col-sm-10 col-xs-10">
+  <div class="col-md-10 col-sm-10 col-xs-10 messageRow">
     <div class="row">
       <h5 class="timestamp"><strong>{{message.user.userName}}</strong>
         <small class="float-right">{{message.timestamp | amTimeAgo}}</small>
       </h5>
     </div>
     <!--<pre>{{message | json}}</pre>-->
-    <div class="row messageRow">
+    <div class="row">
       <p class="message">{{!viewFullMessage ? message.message.substring(0,150) : ''}}
         <span *ngIf="!viewFullMessage && message.message.length > 150">...</span>
         <span *ngIf="viewFullMessage">{{message.message}}</span>
@@ -28,7 +28,7 @@
   </div>
 </div>
 <div class="row message-lower" *ngIf="!message.parentId">
-  <div name="button-bar" class="float-right button-bar">
+    <div name="button-bar" class="float-right button-bar">
     <button type="button" class="btn btn-link"
             *ngIf="message && message.replies"
             (click)="onClickShowReplies()"

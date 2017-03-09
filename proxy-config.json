@@ -16,6 +16,15 @@
       "^/socket": ""
     },
     "logLevel": "debug"
+  },
+  "ws://ws.localhost:8080/chat": {
+    "target": "ws://ws.localhost:8080/chat",
+    "secure": false,
+    "ws": true,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "ws://ws.localhost:8080/chat": "ws://ws.localhost:8080/chat"
+    }
   }
 }
 

@@ -6,7 +6,7 @@
   overflow: hidden;
   margin-bottom: 0;
   border: 1px solid #b1b1b1;
-  border-radius: 7px;
+  border-radius: 3px;
   padding-left: 15px;
   padding-right: 15px;
 }
@@ -45,7 +45,7 @@
 }
 
 .avatar {
-  opacity: 0.6;
+  opacity: 0.75;
   margin-top: 4px;
   margin-left: -11px;
   margin-bottom: 2px;
@@ -177,4 +177,20 @@
 .submit-btn {
   margin-top: 5px;
   margin-bottom: 5px;
+}
+
+
+@media (max-width: 375px ) {
+  .messageRow {
+    padding-left: 28px;
+  }
+}
+@media (max-width: 375px ) {
+  .avatar {
+    width: 2.6em;
+  }
+  .button-bar > button > span.glyph {
+    /*font-size: 10px;*/
+    /*TODO make smaller icons? */
+  }
 }

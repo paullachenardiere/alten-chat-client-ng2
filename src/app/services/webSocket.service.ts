@@ -3,6 +3,8 @@ import * as Rx from "rxjs/Rx";
 import {Injectable} from "@angular/core";
 
 
+// CLASS NOT IN USE. BUT KEEP THIS!!
+
 @Injectable()
 export class WebSocketService {
   private socket: Rx.Subject<MessageEvent>;

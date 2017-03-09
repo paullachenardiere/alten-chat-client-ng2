@@ -15,26 +15,40 @@ export class ChatComponent implements OnInit, OnDestroy {
   public errorMessage: any;
   public data: Observable<Array<any>>;
   public useSockets: boolean = true;
-  connection;
+  public session;
+  public activeSessions: number = 0;
 
   constructor(public chatService: ChatService) {
+    this.subscribeToSocketStream();
   }
 
 
   ngOnInit(): void {
+    this.chatService.socket.onOpen(
+      (session: MessageEventInit) => {
+        this.session = session;
+        console.info("onOpen session", this.session);
+      }
+    );
+    this.chatService.socket.onClose(
+      (session: MessageEventInit) => {
+        this.session = session;
+        console.info("onClose session", this.session);
+      }
+    );
 
     if (this.useSockets) {
       this.getAllMessages();
+      this.getActiveSessions();
       // this.getAllMessagesSocket();
     } else {
       // this.getAllMessages();
     }
-    console.log('ngOnInit() ',this.connection);
   }
 
   ngOnDestroy() {
-    console.log('ngOnDestroy() ',this.connection);
-    this.connection.unsubscribe();
+    console.log('ngOnDestroy() ', this.session);
+    this.session.unsubscribe();
   }
 
   /**
@@ -48,8 +62,27 @@ export class ChatComponent implements OnInit, OnDestroy {
     );
   }
 
+  subscribeToSocketStream() {
+
+    this.chatService.socket.getDataStream().subscribe(
+      (msg) => {
+        let newMessage: Message = JSON.parse(msg.data);
+        console.log("newMessage", newMessage);
+        this.updateMessageInDOM(newMessage);
+        // this.chatService.socket.close(false);
+      },
+      (msg) => {
+        console.log("error", msg);
+      },
+      () => {
+        console.log("complete");
+      }
+    );
+  }
+
+
   getAllMessagesSocket() {
-    this.connection = this.chatService.getAllMessagesSocket().subscribe(
+    this.chatService.getAllMessagesSocket().subscribe(
       messages => this.messages = messages,
       error => this.errorMessage = <any>error
     );
@@ -62,12 +95,20 @@ export class ChatComponent implements OnInit, OnDestroy {
     );
   }
 
+  getActiveSessions() {
+    this.chatService.getActiveSessions().subscribe(
+      activeSessions => this.activeSessions = activeSessions,
+      error => this.errorMessage = <any>error
+    );
+  }
+
   postMessage() {
     // this.postMessageRest();
     // if (this.useSockets) {
-    //   this.postMessageSocket();
     // } else {
-      this.postMessageRest();
+    this.postMessageSocket();
+    this.newMessage = new Message();
+    // this.postMessageRest();
     // }
   }
 
