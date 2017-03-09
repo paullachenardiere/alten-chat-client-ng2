@@ -21,8 +21,6 @@ export class MessageComponent {
   public messageContainer: Message;
   public errorMessage: any;
 
-  // @ViewChild('someVar') el:ElementRef;
-
   constructor(public chatService: ChatService, public chatComponent: ChatComponent, private rd: Renderer) {
     this.chatComponent = chatComponent;
   }

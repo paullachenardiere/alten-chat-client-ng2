@@ -68,11 +68,20 @@ export class ChatComponent implements OnInit, OnDestroy {
       (msg) => {
         let newMessage: Message = JSON.parse(msg.data);
         console.log("newMessage", newMessage);
+
+        if (newMessage.hasOwnProperty('replies') && newMessage.replies.length > 0) {
+          for (let i = 0; i < this.messages.length; i++) {
+            if (this.messages[i].id === newMessage.id) {
+              this.messages.splice(i, 1);
+              break;
+            }
+          }
+        }
         this.updateMessageInDOM(newMessage);
-        // this.chatService.socket.close(false);
       },
       (msg) => {
         console.log("error", msg);
+        this.chatService.socket.close(false);
       },
       () => {
         console.log("complete");

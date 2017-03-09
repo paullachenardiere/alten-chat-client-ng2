@@ -32,7 +32,7 @@
     <button type="button" class="btn btn-link"
             *ngIf="message && message.replies"
             (click)="onClickShowReplies()"
-            ngClass="{{message.replies.length > 1 ? 'replies' : ''}}">
+            ngClass="{{message.replies.length > 0 ? 'replies' : ''}}">
       <span class="comments">{{message.replies.length}} {{message.replies.length > 1 ? 'comments' : 'comment'}} </span>
       <span *ngIf="message.replies.length > 1">
         <span *ngIf="!showReplies" class="glyphicon glyphicon-chevron-up glyph" aria-label="none"></span>

@@ -122,7 +122,7 @@
 }
 
 .replies {
-  background-color: rgba(166, 207, 236, 0.41);
+  background-color: rgba(166, 207, 236, 0.25);
   border-bottom-left-radius: 13px;
   border-bottom-right-radius: 13px;
 }
