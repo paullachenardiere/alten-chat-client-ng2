@@ -1,51 +1,38 @@
 .chatMessage {
-  transition: all 1s ease-out;
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  -o-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+  transform: scale(0, 0);
   background-color: #ffffff;
-  opacity: 0;
-  /*height: 0;*/
+  opacity: 0.1;
   overflow: hidden;
   margin-bottom: 0;
   border: 1px solid #b1b1b1;
   border-radius: 3px;
-  padding-left: 15px;
   padding-right: 15px;
 }
 
 .chatMessage.show {
-  transition: all 0.4s ease-out;
+  transition: all 1.4s ease-out;
+  transform: none;
   opacity: 1;
   height: inherit;
-  /*height: 7.4em;*/
   margin-bottom: 0.5em;
-  /*width: inherit;*/
-  /*height: 7.4em;*/
-  /*overflow: auto;*/
+  padding-left: 15px;
+  margin-left: 0;
 }
 
 .chatMessage.show.expand {
   box-shadow: 1px 1px 3px rgb(156, 156, 156);
   background-color: #f7f7f7;
-  /*height: inherit;*/
 }
-
-/*.chatMessage.show.expand > message-body.messageRow {*/
-/*height: inherit!important;*/
-/*}*/
-
-/*.delete-message.chatMessage{*/
-/*transition: all 0.4s ease-out;*/
-/*opacity: 0;*/
-/*height: 0em;*/
-/*overflow: hidden;*/
-/*transition: height 2s ease-out;*/
-/*height: 0.1em;*/
-/*}*/
 
 .avatar-box {
 }
 
 .avatar {
-  opacity: 0.75;
+  opacity: 0.65;
   margin-top: 4px;
   margin-left: -11px;
   margin-bottom: 2px;
@@ -65,6 +52,15 @@
   box-shadow: 1px 1px 1px #424242;
 }
 
+.avatarXL {
+  transition: padding-left 0.5s ease-out;
+  /*padding-left: 0;*/
+  box-shadow: 0 0 107px rgba(255, 255, 255, 0.3);
+}
+
+.avatarXL:hover {
+}
+
 .status {
   margin: 0 0 4px -6px;
   font-size: 0.8em;
@@ -82,12 +78,27 @@
 }
 
 .timestamp {
-  /*padding-top: 3px;*/
   padding-right: 6px;
+  margin-bottom: 2px;
 }
 
 .message {
   padding-right: 40px;
+}
+
+p.message.overflow {
+  background: -webkit-linear-gradient(top, rgb(0, 0, 0) 20%, rgba(255, 255, 255, 0) 140%);
+  background: linear-gradient(to bottom, rgb(0, 0, 0) 20%, rgba(255, 255, 255, 0) 140%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+p.message > span > button#viewMore {
+  margin-top: -6px;
+}
+
+p.message.overflow > span > button#viewMore {
+  -webkit-text-fill-color: #337ab7;
 }
 
 .message-upper {
@@ -95,23 +106,13 @@
 }
 
 .messageRow {
-  /*height: 2.8em;*/
 }
-
-.messageRow {
-  /*overflow: hidden;*/
-  /*text-overflow: ellipsis;*/
-}
-
-/*.messageRow p {*/
-/*text-overflow: ellipsis;*/
-/*}*/
 
 .message-lower {
   background-color: #f9f9f9;
-  border-bottom-left-radius: 7px;
-  border-bottom-right-radius: 7px;
-  height: 25px;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  height: 26px;
   opacity: 0.6;
   transition: opacity 0.1s ease-out;
 
@@ -133,7 +134,6 @@
 
 .replies:hover {
   outline: none;
-  /*color: #d4d4d4;*/
   cursor: pointer;
 
 }
@@ -165,9 +165,16 @@
   padding: 0;
 }
 
-.repliesContainer {
+.repliesContainer.showRepliesContainer {
+  transition: opacity 0.4s ease-out;
+  opacity: 1;
   margin-left: 25px;
   margin-right: 25px;
+}
+
+.repliesContainer {
+  transition: opacity 0.4s ease-out;
+  opacity: 0;
 }
 
 .form-control {
@@ -179,18 +186,30 @@
   margin-bottom: 5px;
 }
 
-
 @media (max-width: 375px ) {
   .messageRow {
     padding-left: 28px;
   }
 }
+
 @media (max-width: 375px ) {
   .avatar {
     width: 2.6em;
   }
+
   .button-bar > button > span.glyph {
     /*font-size: 10px;*/
     /*TODO make smaller icons? */
   }
+}
+
+#user-modal-status {
+  color: white !important;
+  margin-left: 50px !important;
+}
+
+#user-modal-username {
+  text-align: -webkit-right;
+  margin-top: 37px;
+  color: darkgray;
 }

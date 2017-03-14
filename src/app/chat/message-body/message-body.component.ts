@@ -45,7 +45,7 @@ export class MessageBodyComponent {
     // messageElement.open = true;
   }
 
-  onClickReply(parentId, userId) {
+  onClickReply(parentId: number, userId: number) {
     this.messageComponent.onClickReply(parentId, userId);
   }
 
@@ -53,9 +53,12 @@ export class MessageBodyComponent {
     this.edit = !this.edit;
     this.messageComponent.onClickEdit(message)
   }
-  onClickShowReplies() {
+  onClickShowReplies(parentId: number, userId: number) {
     this.showReplies = !this.showReplies;
-    this.messageComponent.onClickShowReplies();
+    this.messageComponent.onClickShowReplies(parentId, userId);
+    this.messageComponent.onClickReply(parentId, userId);
+
+
   }
 
   deleteMessage(id: number, index: number) {

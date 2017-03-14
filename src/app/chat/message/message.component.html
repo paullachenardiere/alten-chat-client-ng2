@@ -1,31 +1,36 @@
 <div class="chatMessage show" id="{{message.id}}"
-     ngClass="{{showReplies && message.replies.length > 0 ? 'expand' : 'collapse'}}">
+     ngClass="{{showReplies && message.replies.length > 0 ? 'expand' : ''}}">
+
   <!--<pre>{{message | json}}</pre>-->
 
   <message-body [message]="message"></message-body>
-  <div *ngIf="showReplies" class="repliesContainer">
+
+  <div [hidden]="!expandView" class="repliesContainer">
+
+    <div [hidden]="!showReplies" >
     <div *ngFor="let message of message.replies">
       <message-body class="" [message]="message"></message-body>
     </div>
   </div>
 
-  <div class="" *ngIf="toggleInput">
-    <form ngForm>
-      <!--<div class="col-md-2 col-sm-1"></div>-->
-      <!--<div class="col-md-8 col-sm-10 col-xs-12">-->
-      <textarea class="form-control" rows="3" name="message" required
-                [(ngModel)]="messageContainer.message"
-                placeholder="add reply..."
-                (keyup.enter)="onEnter(message.id)">
+
+    <div class="" *ngIf="toggleInput">
+      <form ngForm>
+
+        <textarea class="form-control" rows="3" name="message" required
+                  [(ngModel)]="messageContainer.message"
+                  placeholder="add reply..."
+                  (keyup.enter)="onEnter(message.id)">
 
       </textarea>
-        <button type="submit" class="btn btn-success btn-sm float-right submit-btn" [disabled]="!messageContainer.message"
+        <button type="submit" class="btn btn-success btn-sm float-right submit-btn"
+                [disabled]="!messageContainer.message"
                 (click)="submit(message.id)">
           <span class="glyphicon glyphicon-send glyph"></span> {{edit ? 'Done' : 'Post'}}
         </button>
-      <!--</div>-->
-      <!--<div class="col-md-2 col-sm-1"></div>-->
-    </form>
+
+      </form>
+    </div>
   </div>
 </div>
 

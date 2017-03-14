@@ -30,37 +30,38 @@ export class ChatService {
   public session;
   private baseUrl: string = "/api/altenchat/";
 
-  private baseUrlSocket: string = "ws://192.168.1.95:8080/chat";
+  // TODO Fix an external config file to handle different IP's
+  private baseUrlSocket: string = "ws://10.46.5.31:8080/chat"; //JOBBET GuestNetwork
+  // private baseUrlSocket: string = "ws://192.168.1.95:8080/chat"; //HEMMA (Paul)
   // private baseUrlSocket: string = "ws://localhost:8080/chat";
 
-  // private baseUrl: string = "http://localhost:8080/altenchat/";
   private headersGet = new Headers({'Accept': 'application/json'});
   private headersPost = new Headers({'Content-Type': 'application/json'});
   private messages;
 
-
   constructor(private http: Http, wsService: WebSocketService) {
     // this.socket = wsService.connect(this.baseUrlSocket);
     // this.socket.setSendMode(WebSocketSendMode.Direct);
-
-    this.socket = new $WebSocket(this.baseUrlSocket);
-
+    this.socket = this.establishSocketConnection();
     this.socket.onOpen(
       (session: MessageEventInit) => {
-        console.info("onOpen this.socket", this.socket);
         this.session = session;
         console.info("onOpen session", this.session);
+        console.info("onOpen this.socket", this.socket);
       }
     );
   }
 
+  establishSocketConnection(): any {
+    let socket = new $WebSocket(this.baseUrlSocket);
+    console.log('establishSocketConnection() = ', socket);
+    return socket;
+  };
+
 
   getAllMessagesSocket(): Observable<Message[]> {
-
     return this.socket.getDataStream();
-
   }
-
 
   getAllMessages(): Observable<Message[]> {
     return this.http.get(this.baseUrl, this.headersGet)
@@ -76,7 +77,6 @@ export class ChatService {
     console.log('postMessageSocket', message);
     this.socket.send(message).publish().connect();
   }
-
 
   postMessage(message: Message): Observable<Message> {
     console.log('postMessage', message);
@@ -104,13 +104,12 @@ export class ChatService {
     return this.http.get(this.baseUrl+'statistics' , this.headersGet)
       .map(
         res => {
-        let data = this.extractData(res);
-        console.log('statistics ',res);
+        let data = res.json();
+        console.log('statistics ',data);
         return data;
         })
       .catch(this.handleError);
   }
-
 
   replyMessage(message: Message, id: number): Observable<Message> {
     let options = new RequestOptions({headers: this.headersPost});

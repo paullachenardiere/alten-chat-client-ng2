@@ -18,6 +18,7 @@ export class MessageComponent {
   public toggleInput = false;
   public edit = false;
   public showReplies = false;
+  public expandView = false;
   public messageContainer: Message;
   public errorMessage: any;
 
@@ -76,19 +77,26 @@ export class MessageComponent {
 
     obs.subscribe(
       result => {
+        let chatMessage;
+        let index;
         for (let i = 0; i < this.chatComponent.messages.length; i++) {
           if (this.chatComponent.messages[i].id === id) {
-
-            let chatMessage = document.getElementById(this.chatComponent.messages[i].id.toString());
-            console.log("chatMessage element", parent);
-
-            $(chatMessage).removeClass('show');
-            // $(chatMessage).addClass('delete-message');
-            let timeoutId = setTimeout(() => {
-              this.chatComponent.messages.splice(i, 1);
-            }, 1000);
+            index = i;
+            chatMessage = document.getElementById(this.chatComponent.messages[i].id.toString());
+            console.log("chatMessage element", chatMessage);
+            break;
           }
         }
+
+        setTimeout(() => {
+          $(chatMessage).removeClass('show');
+        }, 200);
+
+        // $(chatMessage).addClass('delete-message');
+        setTimeout(() => {
+          this.chatComponent.messages.splice(index, 1);
+          console.log("timeoutId chatMessage", chatMessage);
+        }, 500);
         return this.chatComponent.messages;
 
 
@@ -98,8 +106,35 @@ export class MessageComponent {
 
   }
 
-  onClickShowReplies() {
+  onClickShowReplies(parentId, userId) {
+    this.edit = false;
     this.showReplies = !this.showReplies;
+    if (this.showReplies) {
+      this.toggleInput = true;
+      this.expandView = true;
+    } else {
+      this.toggleInput = !this.toggleInput;
+      this.expandView = !this.expandView;
+    }
+
+    let chatMessage = document.getElementById(this.message.id.toLocaleString());
+    let repliesContainer = chatMessage.getElementsByClassName('repliesContainer');
+
+    setTimeout(() => {
+      if (!this.expandView) {
+        $(repliesContainer).removeClass('showRepliesContainer');
+      } else {
+        $(repliesContainer).addClass('showRepliesContainer');
+      }
+
+      console.log("repliesContainer element", repliesContainer);
+    }, 100);
+
+    console.log('onClickReply');
+    // this.toggleInput = !this.toggleInput;
+    this.messageContainer = new Message();
+    this.messageContainer.userId = userId;
+
   }
 
   onEnter(id: number) {
@@ -109,18 +144,33 @@ export class MessageComponent {
 
   onClickEdit(message) {
     this.edit = true;
-    this.toggleInput = !this.toggleInput;
+
+    if (this.showReplies) {
+      this.toggleInput = true;
+      this.showReplies = false;
+      this.expandView = true;
+    } else {
+      this.expandView = !this.expandView;
+      this.toggleInput = !this.toggleInput;
+    }
     this.messageContainer = message;
     this.messageContainer.userId = message.user.id;
+
+    let chatMessage = document.getElementById(this.message.id.toLocaleString());
+    let repliesContainer = chatMessage.getElementsByClassName('repliesContainer');
+
+    setTimeout(() => {
+      if (!this.expandView) {
+        $(repliesContainer).removeClass('showRepliesContainer');
+      } else {
+        $(repliesContainer).addClass('showRepliesContainer');
+      }
+
+      console.log("repliesContainer element", repliesContainer);
+    }, 100);
   }
 
   onClickReply(parentId, userId) {
-    this.edit = false;
-    console.log('onClickReply');
-    this.toggleInput = !this.toggleInput;
-    this.messageContainer = new Message();
-
-    this.messageContainer.userId = userId;
 
   }
 }

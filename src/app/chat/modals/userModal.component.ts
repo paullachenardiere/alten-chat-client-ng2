@@ -4,8 +4,8 @@ import {ModalComponent} from "./modal.component";
 
 @Component({
   selector: 'user-modal',
-  templateUrl: 'userModal.component.html'
-
+  templateUrl: 'userModal.component.html',
+  styleUrls: ['modal.component.css']
 })
 
 export class UserModalComponent extends ModalComponent {

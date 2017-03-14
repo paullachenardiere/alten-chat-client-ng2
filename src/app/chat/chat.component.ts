@@ -27,13 +27,13 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.chatService.socket.onOpen(
       (session: MessageEventInit) => {
         this.session = session;
-        console.info("onOpen session", this.session);
+        console.info("ChatComponent onOpen session", this.session);
       }
     );
     this.chatService.socket.onClose(
       (session: MessageEventInit) => {
         this.session = session;
-        console.info("onClose session", this.session);
+        console.info("ChatComponent onClose session", this.session);
       }
     );
 
@@ -106,18 +106,19 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   getActiveSessions() {
     this.chatService.getActiveSessions().subscribe(
-      activeSessions => this.activeSessions = activeSessions,
+      activeSessions => {
+        console.log("activeSessions = ", activeSessions);
+        this.activeSessions = activeSessions;
+      },
       error => this.errorMessage = <any>error
     );
   }
 
   postMessage() {
-    // this.postMessageRest();
-    // if (this.useSockets) {
-    // } else {
-    this.postMessageSocket();
+
+    this.postMessageRest();
+    // this.postMessageSocket();
     this.newMessage = new Message();
-    // this.postMessageRest();
     // }
   }
 
@@ -134,7 +135,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.newMessage.userId = 2;
     this.chatService.postMessage(this.newMessage).subscribe(
       message => {
-        return this.updateMessageInDOM(message);
+        // return this.updateMessageInDOM(message);
       },
       error => this.errorMessage = <any>error);
   }
