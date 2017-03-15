@@ -31,8 +31,8 @@ export class ChatService {
   private baseUrl: string = "/api/altenchat/";
 
   // TODO Fix an external config file to handle different IP's
-  private baseUrlSocket: string = "ws://10.46.5.31:8080/chat"; //JOBBET GuestNetwork
-  // private baseUrlSocket: string = "ws://192.168.1.95:8080/chat"; //HEMMA (Paul)
+  // private baseUrlSocket: string = "ws://10.46.5.31:8080/chat"; //JOBBET GuestNetwork
+  private baseUrlSocket: string = "ws://192.168.1.95:8080/chat"; //HEMMA (Paul)
   // private baseUrlSocket: string = "ws://localhost:8080/chat";
 
   private headersGet = new Headers({'Accept': 'application/json'});
@@ -48,6 +48,9 @@ export class ChatService {
         this.session = session;
         console.info("onOpen session", this.session);
         console.info("onOpen this.socket", this.socket);
+        console.log("session sessionId = ", this.session.sessionId);
+        console.log("socket sessionId = ", this.socket.sessionId);
+
       }
     );
   }
@@ -100,13 +103,18 @@ export class ChatService {
       .catch(this.handleError);
   }
 
-  getActiveSessions(): Observable<number> {
+  getActiveSessions(): Observable<any> {
     return this.http.get(this.baseUrl+'statistics' , this.headersGet)
       .map(
         res => {
         let data = res.json();
+        let stat = [];
+          Object.keys(data).forEach(function(key) {
+            console.log(key);
+            stat.push({"id": key, "ip": data[key]});
+          });
         console.log('statistics ',data);
-        return data;
+        return stat;
         })
       .catch(this.handleError);
   }

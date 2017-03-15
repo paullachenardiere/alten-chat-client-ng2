@@ -1,7 +1,7 @@
 <div class="col-lg-4 col-md-3 col-sm-2"></div>
 <div class="col-lg-4 col-md-6 col-sm-8 col-xs-12">
   <span>Websocket is <strong>{{session ? session.type : ''}}</strong>.
-    Active sessions = <strong>{{activeSessions}}</strong></span>
+    Active sessions = <strong>{{activeSessions.length}}</strong></span>
   <chat-message class="" *ngFor="let message of messages" [message]="message"></chat-message>
   <form class=" " ngForm>
       <textarea class="form-control" rows="3" name="message" required [(ngModel)]="newMessage.message"
@@ -15,6 +15,21 @@
   <div class="space-container"></div>
 </div>
 <div class="col-lg-4 col-md-3 col-sm-2"></div>
+
+<!--MODALS-->
+<warning-modal>
+  <div class="warning-modal-header">
+    <h5 *ngIf="deletedMessage">
+      <strong>OPS!</strong><br><br>
+      <span class="userName">{{deletedMessage.user.userName}}</span>
+      just deleted this message. We've copied your text.<br>
+      "Paste" it somewhere, if you want to save it.
+    </h5>
+  </div>
+  <div class="warning-modal-footer">
+    <button type="button" class="btn btn-default" (click)="warningModal.hide()">Ok</button>
+  </div>
+</warning-modal>
 
 
 

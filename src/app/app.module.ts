@@ -3,6 +3,7 @@ import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 import {MomentModule} from "angular2-moment/moment.module";
+import {ClipboardModule} from 'ngx-clipboard';
 
 import {AppComponent} from './app.component';
 import {EventFilteringComponent} from './event_filtering.component';
@@ -19,6 +20,7 @@ import {MessageBodyComponent} from './chat/message-body/message-body.component';
 import {ChatService} from './services/chat.service';
 import {UserService} from "./services/user.service";
 import {WebSocketService} from "./services/webSocket.service";
+import {WarningModalComponent} from "./chat/modals/warningModal.component";
 
 @NgModule({
   declarations: [
@@ -32,13 +34,15 @@ import {WebSocketService} from "./services/webSocket.service";
     ModalComponent,
     DeleteModalComponent,
     UserModalComponent,
+    WarningModalComponent,
     MessageBodyComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
-    MomentModule
+    MomentModule,
+    ClipboardModule
   ],
   providers: [ChatService, WebSocketService, UserService],
   bootstrap: [AppComponent]

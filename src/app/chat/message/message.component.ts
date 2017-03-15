@@ -72,37 +72,7 @@ export class MessageComponent {
    * Implemented in DOM
    */
   deleteMessage(id: number, index: number) {
-    console.log("Delete message. ID=", id);
-    let obs = this.chatService.deleteMessage(id);
-
-    obs.subscribe(
-      result => {
-        let chatMessage;
-        let index;
-        for (let i = 0; i < this.chatComponent.messages.length; i++) {
-          if (this.chatComponent.messages[i].id === id) {
-            index = i;
-            chatMessage = document.getElementById(this.chatComponent.messages[i].id.toString());
-            console.log("chatMessage element", chatMessage);
-            break;
-          }
-        }
-
-        setTimeout(() => {
-          $(chatMessage).removeClass('show');
-        }, 200);
-
-        // $(chatMessage).addClass('delete-message');
-        setTimeout(() => {
-          this.chatComponent.messages.splice(index, 1);
-          console.log("timeoutId chatMessage", chatMessage);
-        }, 500);
-        return this.chatComponent.messages;
-
-
-      },
-      error => this.chatComponent.errorMessage = <any>error
-    )
+    this.chatComponent.deleteMessage(id, index);
 
   }
 

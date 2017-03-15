@@ -1,7 +1,9 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
 import {Observable} from "rxjs";
 import {ChatService} from "../services/chat.service";
 import {Message} from "./model/Message";
+import {WarningModalComponent} from "./modals/warningModal.component";
+declare let $: any;
 
 @Component({
   selector: 'app-chat',
@@ -12,11 +14,15 @@ export class ChatComponent implements OnInit, OnDestroy {
   public messages: Message[] = [];
   public message: Message;
   public newMessage: Message = new Message();
+  public deletedMessage;
   public errorMessage: any;
   public data: Observable<Array<any>>;
   public useSockets: boolean = true;
   public session;
   public activeSessions: number = 0;
+
+  @ViewChild(WarningModalComponent)
+  public readonly warningModal: WarningModalComponent;
 
   constructor(public chatService: ChatService) {
     this.subscribeToSocketStream();
@@ -67,6 +73,16 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.chatService.socket.getDataStream().subscribe(
       (msg) => {
         let newMessage: Message = JSON.parse(msg.data);
+
+        if (newMessage.deleted) {
+          this.deletedMessage = newMessage;
+          console.log("Message to delete", this.deletedMessage);
+           //TODO check of the user writes on the specific message, than warn that the message will be removed..
+          this.warningModal.show();
+          // this.deleteMessageInDOM(newMessage.id);
+          return;
+        }
+
         console.log("newMessage", newMessage);
 
         if (newMessage.hasOwnProperty('replies') && newMessage.replies.length > 0) {
@@ -89,6 +105,18 @@ export class ChatComponent implements OnInit, OnDestroy {
     );
   }
 
+  deleteMessage(id: number, index: number) {
+    console.log("Delete message. ID=", id);
+
+    let obs = this.chatService.deleteMessage(id);
+
+    obs.subscribe(
+      result => {
+        this.deleteMessageInDOM(id);
+      },
+      error => this.errorMessage = <any>error
+    )
+  }
 
   getAllMessagesSocket() {
     this.chatService.getAllMessagesSocket().subscribe(
@@ -159,4 +187,28 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.newMessage = new Message();
     return this.messages;
   };
+
+  private deleteMessageInDOM(id: number) {
+    let chatMessage;
+    let index;
+    for (let i = 0; i < this.messages.length; i++) {
+      if (this.messages[i].id === id) {
+        index = i;
+        chatMessage = document.getElementById(this.messages[i].id.toString());
+        console.log("chatMessage element", chatMessage);
+        break;
+      }
+    }
+
+    setTimeout(() => {
+      $(chatMessage).removeClass('show');
+    }, 200);
+
+    // $(chatMessage).addClass('delete-message');
+    setTimeout(() => {
+      this.messages.splice(index, 1);
+      console.log("timeoutId chatMessage", chatMessage);
+    }, 500);
+    return this.messages;
+  }
 }
