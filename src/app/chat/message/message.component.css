@@ -177,6 +177,13 @@ p.message.overflow > span > button#viewMore {
   opacity: 0;
 }
 
+.editedLabel {
+  font-size: 0.8em;
+  margin-left: 9px;
+  font-style: italic;
+  color: #337ab7;
+}
+
 .form-control {
   margin-top: 10px;
 }

@@ -1,4 +1,3 @@
-///<reference path="../../../node_modules/angular2-websocket/angular2-websocket.d.ts"/>
 import {Injectable} from '@angular/core';
 import {Http, Headers, Response, RequestOptions, URLSearchParams} from "@angular/http";
 
@@ -29,19 +28,23 @@ export class ChatService {
   public socket;
   public session;
   private baseUrl: string = "/api/altenchat/";
+  public SESSION_ID_PREFIX: string = 'SESSION_ID=';
+  public SESSION_ID: string;
+  public isWriting: boolean = false;
+  public messageContainer: Message;
+
+  //TODO make persistent with localstorage...
+  public unsubscribedMessages = {};
 
   // TODO Fix an external config file to handle different IP's
-  // private baseUrlSocket: string = "ws://10.46.5.31:8080/chat"; //JOBBET GuestNetwork
-  private baseUrlSocket: string = "ws://192.168.1.95:8080/chat"; //HEMMA (Paul)
-  // private baseUrlSocket: string = "ws://localhost:8080/chat";
+  private baseUrlSocket: string = "ws://10.46.4.188:8080/chat"; //JOBBET GuestNetwork
+  // private baseUrlSocket: string = "ws://192.168.1.95:8080/chat"; //HEMMA (Paul)
 
   private headersGet = new Headers({'Accept': 'application/json'});
   private headersPost = new Headers({'Content-Type': 'application/json'});
   private messages;
 
   constructor(private http: Http, wsService: WebSocketService) {
-    // this.socket = wsService.connect(this.baseUrlSocket);
-    // this.socket.setSendMode(WebSocketSendMode.Direct);
     this.socket = this.establishSocketConnection();
     this.socket.onOpen(
       (session: MessageEventInit) => {
@@ -50,9 +53,26 @@ export class ChatService {
         console.info("onOpen this.socket", this.socket);
         console.log("session sessionId = ", this.session.sessionId);
         console.log("socket sessionId = ", this.socket.sessionId);
-
+        this.getSessionId();
       }
     );
+  }
+
+  getSessionId() {
+    this.socket.getDataStream().subscribe(
+      (msg) => {
+        let sessionId: string = msg.data;
+        if (sessionId.indexOf(this.SESSION_ID_PREFIX) > -1) {
+          sessionId = sessionId.substring(this.SESSION_ID_PREFIX.length, sessionId.length);
+          this.SESSION_ID = sessionId;
+          console.log('sessionId = ', this.SESSION_ID);
+        }
+      });
+
+    this.socket.onMessage(
+      (message) => {
+        console.log('onmessage = ', message);
+      })
   }
 
   establishSocketConnection(): any {
@@ -88,6 +108,7 @@ export class ChatService {
       .map(
         res => {
           let data = this.extractData(res);
+          this.removeMessageFromCache(message.id);
           return data;
         })
       .catch(this.handleError);
@@ -104,17 +125,17 @@ export class ChatService {
   }
 
   getActiveSessions(): Observable<any> {
-    return this.http.get(this.baseUrl+'statistics' , this.headersGet)
+    return this.http.get(this.baseUrl + 'statistics', this.headersGet)
       .map(
         res => {
-        let data = res.json();
-        let stat = [];
-          Object.keys(data).forEach(function(key) {
+          let data = res.json();
+          let stat = [];
+          Object.keys(data).forEach(function (key) {
             console.log(key);
             stat.push({"id": key, "ip": data[key]});
           });
-        console.log('statistics ',data);
-        return stat;
+          console.log('statistics ', data);
+          return stat;
         })
       .catch(this.handleError);
   }
@@ -125,6 +146,7 @@ export class ChatService {
       .map(
         res => {
           let data = this.extractData(res);
+          this.removeMessageFromCache(id);
           return data;
         })
       .catch(this.handleError);
@@ -149,7 +171,7 @@ export class ChatService {
   }
 
   deleteMessage(id: number): Observable<Response> {
-    return this.http.delete(this.baseUrl + id)
+    return this.http.delete(this.baseUrl + id + '/' + this.SESSION_ID)
       .map(res => {
         return res
       })
@@ -182,4 +204,25 @@ export class ChatService {
     return body || {};
   }
 
+  public removeMessageFromCache(id) {
+    //TODO remove from localstorage
+    if (this.unsubscribedMessages.hasOwnProperty(id)) {
+      console.log('removeMessageFromCache', id);
+      delete this.unsubscribedMessages[id];
+    }
+
+  }
+
+  messageIsValid(message: Message): boolean {
+    if (!message || !message.message || message.message.length === 0) {
+      console.log('Message is NOT valid');
+      return false;
+    }
+    if (!message.message.replace(/\s/g, '').length) {
+      console.log('Message is NOT valid');
+      return false;
+    }
+    console.log('Message is valid. Message = ', message.message);
+    return true;
+  }
 }

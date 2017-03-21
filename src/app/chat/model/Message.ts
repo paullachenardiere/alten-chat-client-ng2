@@ -5,5 +5,6 @@ export class Message {
   deleted: boolean;
   edited: boolean;
   replies: [any];
+  sessionId: string;
 }
 

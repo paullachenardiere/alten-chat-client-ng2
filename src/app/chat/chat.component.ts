@@ -15,6 +15,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   public message: Message;
   public newMessage: Message = new Message();
   public deletedMessage;
+  public messageTextToCopy;
   public errorMessage: any;
   public data: Observable<Array<any>>;
   public useSockets: boolean = true;
@@ -25,11 +26,11 @@ export class ChatComponent implements OnInit, OnDestroy {
   public readonly warningModal: WarningModalComponent;
 
   constructor(public chatService: ChatService) {
-    this.subscribeToSocketStream();
   }
 
 
   ngOnInit(): void {
+    this.subscribeToSocketStream();
     this.chatService.socket.onOpen(
       (session: MessageEventInit) => {
         this.session = session;
@@ -57,10 +58,6 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.session.unsubscribe();
   }
 
-  /**
-   * Implemented in DOM
-   */
-
   getAllMessages() {
     this.chatService.getAllMessages().subscribe(
       messages => this.messages = messages,
@@ -72,18 +69,38 @@ export class ChatComponent implements OnInit, OnDestroy {
 
     this.chatService.socket.getDataStream().subscribe(
       (msg) => {
-        let newMessage: Message = JSON.parse(msg.data);
+        let newMessage: Message;
+
+        if (msg.data.indexOf(this.chatService.SESSION_ID_PREFIX) > -1) {
+          return;
+        } else {
+          newMessage = JSON.parse(msg.data);
+          console.log("incoming Message", newMessage);
+        }
 
         if (newMessage.deleted) {
           this.deletedMessage = newMessage;
           console.log("Message to delete", this.deletedMessage);
-           //TODO check of the user writes on the specific message, than warn that the message will be removed..
-          this.warningModal.show();
-          // this.deleteMessageInDOM(newMessage.id);
+          //TODO check of the user writes on the specific message, than warn that the message will be removed..
+          console.log('incoming message sessionId ', newMessage.sessionId);
+          console.log('Current SESSION_ID', this.chatService.SESSION_ID);
+          if (newMessage.sessionId != this.chatService.SESSION_ID) {
+
+            if (this.chatService.isWriting) {
+              this.messageTextToCopy = this.chatService.unsubscribedMessages[this.deletedMessage.id].message || '';
+              this.warningModal.show();
+            }
+          }
+          this.deleteMessageInDOM(newMessage.id);
           return;
         }
 
-        console.log("newMessage", newMessage);
+        if (newMessage.edited) {
+          console.log("incoming message is edited");
+          this.editMessageInDOM(newMessage);
+          return;
+        }
+
 
         if (newMessage.hasOwnProperty('replies') && newMessage.replies.length > 0) {
           for (let i = 0; i < this.messages.length; i++) {
@@ -150,20 +167,25 @@ export class ChatComponent implements OnInit, OnDestroy {
     // }
   }
 
+  onEnter(id: number) {
+    this.postMessage();
+    console.log("onEnter", id)
+  }
+
+
   postMessageSocket() {
     this.newMessage.userId = 2;
     this.chatService.postMessageSocket(this.newMessage);
   }
 
-
-  /**
-   * Implemented in DOM
-   */
   postMessageRest() {
-    this.newMessage.userId = 2;
+    if (!this.chatService.messageIsValid(this.newMessage)) {
+      return;
+    }
+    this.newMessage.userId = 1;
     this.chatService.postMessage(this.newMessage).subscribe(
       message => {
-        // return this.updateMessageInDOM(message);
+        // TODO update message in dom if no sockets is active
       },
       error => this.errorMessage = <any>error);
   }
@@ -187,6 +209,15 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.newMessage = new Message();
     return this.messages;
   };
+
+  private editMessageInDOM(message: Message) {
+    for (let i = 0; i < this.messages.length; i++) {
+      if (this.messages[i].id === message.id) {
+        this.messages[i] = message;
+        break;
+      }
+    }
+  }
 
   private deleteMessageInDOM(id: number) {
     let chatMessage;

@@ -30,6 +30,7 @@
   </div>
 </div>
 <div class="row message-lower" *ngIf="!message.parentId">
+  <span *ngIf="message.edited" class="editedLabel">(edited)</span>
   <div name="button-bar" class="float-right button-bar">
     <button type="button" class="btn btn-link"
             *ngIf="message && message.replies"
@@ -41,9 +42,6 @@
         <span *ngIf="showReplies" class="glyphicon glyphicon-chevron-down glyph" aria-label="none"></span>
       </span>
     </button>
-    <!--<button type="button" class="btn btn-link" (click)="onClickReply(message.id, 1)">-->
-      <!--<span class="glyphicon glyphicon-plus glyph" aria-label="reply message"></span>-->
-    <!--</button>-->
     <button type="button" class="btn btn-link" (click)="onClickEdit(message)">
       <span class="glyphicon glyphicon-pencil glyph" aria-label="edit message"></span>
     </button>
@@ -70,15 +68,13 @@
 <!--MODALS-->
 <user-modal id="user-modal">
   <div class="user-modal-header">
-
     <div class="col-lg-3 col-md-4 col-sm-6 col-xm-8">
       <img (click)="userModal.show()" src="./assets/paul.jpg" alt="..." class="img-circle avatarXL">
       <p class="status" id="user-modal-status">online <span><div class="statusIndicator"></div></span></p>
     </div>
     <div class="col-lg-9 col-md-8 col-sm-6 col-xm-4">
-      <h2  id="user-modal-username">{{message.user.userName}}</h2>
+      <h2 id="user-modal-username">{{message.user.userName}}</h2>
     </div>
-
 
   </div>
   <div class="user-modal-body">Information about the user

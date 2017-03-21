@@ -1,30 +1,40 @@
 <div class="col-lg-4 col-md-3 col-sm-2"></div>
 <div class="col-lg-4 col-md-6 col-sm-8 col-xs-12">
+
+  <div>
   <span>Websocket is <strong>{{session ? session.type : ''}}</strong>.
-    Active sessions = <strong>{{activeSessions.length}}</strong></span>
+    Active sessions = <strong>{{activeSessions.length}}</strong>
+  is writing = {{chatService.isWriting}}</span>
+  </div>
+
   <chat-message class="" *ngFor="let message of messages" [message]="message"></chat-message>
   <form class=" " ngForm>
-      <textarea class="form-control" rows="3" name="message" required [(ngModel)]="newMessage.message"
+      <textarea class="form-control" rows="3" name="message" required
+                [(ngModel)]="newMessage.message"
+                (keyup.enter)="onEnter()"
                 placeholder="add comment...">
       </textarea>
-    <button type="submit" class="btn btn-success btn-sm float-right " [disabled]="!newMessage.message"
+    <button type="submit" class="btn btn-success btn-sm float-right submit-btn" [disabled]="!newMessage.message"
             (click)="postMessage(newMessage);">
-      <span class="glyphicon glyphicon-send glyph"></span> Post
+      <span>SEND </span>
+      <span class="glyphicon glyphicon-send glyph"></span>
     </button>
   </form>
   <div class="space-container"></div>
 </div>
 <div class="col-lg-4 col-md-3 col-sm-2"></div>
-
 <!--MODALS-->
-<warning-modal>
+<warning-modal *ngIf="deletedMessage">
   <div class="warning-modal-header">
-    <h5 *ngIf="deletedMessage">
+    <h5>
       <strong>OPS!</strong><br><br>
       <span class="userName">{{deletedMessage.user.userName}}</span>
-      just deleted this message. We've copied your text.<br>
-      "Paste" it somewhere, if you want to save it.
+      just deleted this message.<br>
+      Copy your text if you want to save it.
     </h5>
+  </div>
+  <div class="warning-modal-body">
+    <p>{{messageTextToCopy}}</p>
   </div>
   <div class="warning-modal-footer">
     <button type="button" class="btn btn-default" (click)="warningModal.hide()">Ok</button>

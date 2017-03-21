@@ -18,15 +18,17 @@
       <form ngForm>
 
         <textarea class="form-control" rows="3" name="message" required
+                  (focus)="onFormFocus(message.id)"
+                  (focusout)="onFormBlur(message.id)"
                   [(ngModel)]="messageContainer.message"
                   placeholder="add reply..."
-                  (keyup.enter)="onEnter(message.id)">
+                  (keydown.enter)="onEnter(message.id,$event)">
 
       </textarea>
         <button type="submit" class="btn btn-success btn-sm float-right submit-btn"
                 [disabled]="!messageContainer.message"
                 (click)="submit(message.id)">
-          <span class="glyphicon glyphicon-send glyph"></span> {{edit ? 'Done' : 'Post'}}
+          <span *ngIf="!edit" class="glyphicon glyphicon-send glyph"></span> {{edit ? 'Done' : ''}}
         </button>
 
       </form>

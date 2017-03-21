@@ -19,7 +19,7 @@ export class MessageComponent {
   public edit = false;
   public showReplies = false;
   public expandView = false;
-  public messageContainer: Message;
+  public messageContainer: Message  = new Message();
   public errorMessage: any;
 
   constructor(public chatService: ChatService, public chatComponent: ChatComponent, private rd: Renderer) {
@@ -28,9 +28,9 @@ export class MessageComponent {
 
 
   submit(id: number) {
-    if (this.messageContainer.message.length > 0) {
+    if (this.chatService.messageIsValid(this.messageContainer)) {
       if (this.edit) {
-        console.log('Submit', this.messageContainer);
+        console.log('Submit edit', this.messageContainer);
         this.editMessage(this.messageContainer)
       } else {
         this.replyMessage(id);
@@ -104,12 +104,32 @@ export class MessageComponent {
     // this.toggleInput = !this.toggleInput;
     this.messageContainer = new Message();
     this.messageContainer.userId = userId;
+    if (this.chatService.unsubscribedMessages.hasOwnProperty(parentId)) {
+      this.messageContainer.message = this.chatService.unsubscribedMessages[parentId];
+    }
 
   }
 
-  onEnter(id: number) {
+  onEnter(id: number, event) {
+    event.stopPropagation();
     this.submit(id);
     console.log("onEnter", id)
+  }
+
+  onFormFocus(id: number) {
+    this.chatService.isWriting = true;
+    this.chatService.messageContainer = this.messageContainer;
+    this.chatService.unsubscribedMessages[id] = this.messageContainer.message;
+  }
+
+  onFormBlur(id: number) {
+    this.chatService.isWriting = false;
+    this.messageContainer.message = this.messageContainer.message || '';
+    if (!this.messageContainer.message || this.messageContainer.message === "" || this.messageContainer.message.length === 0) {
+      this.chatService.removeMessageFromCache(id);
+    } else {
+      this.chatService.unsubscribedMessages[id] = this.messageContainer.message;
+    }
   }
 
   onClickEdit(message) {

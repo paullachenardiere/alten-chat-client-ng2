@@ -16,3 +16,10 @@ textarea {
 warning-modal .userName {
   color: #b3e06e;
 }
+.submit-btn {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  font-size: 12px;
+  padding-left: 7px;
+  padding-right: 9px;
+}
