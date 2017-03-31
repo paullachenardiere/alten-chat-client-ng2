@@ -1,21 +1,48 @@
+.chat-stream {
+  padding-top: 6px;
+  padding-left: 6px;
+  padding-right: 6px;
+  margin-top: 30px;
+  margin-bottom: 100px;
+  box-shadow: 1px 2px 3px rgb(106, 106, 106);
+  background-color: rgb(212, 221, 226);
+}
 
 .float-right {
   float: right;
 }
+
 .space-container {
   height: 7em;
 }
+
 textarea {
   resize: vertical;
 }
 
-.form-control {
- font-size: 16px;
+form {
+  /*border-top: 1px solid #000000;*/
+  /*padding-top: 5px;*/
 }
+
+.form-control {
+  font-size: 16px;
+  /*border-radius: 0;*/
+  border: 3px solid #ffffff;
+  box-shadow: inset 0 1px 3px rgb(202, 202, 202)
+  /*transition: all 0.2s ease-in;*/
+}
+.form-control:focus {
+  border: 3px solid #838383;
+  /*transition: font-size 0.2s ease-in;*/
+  /*border: 4px solid #ffffff;*/
+}
+
 
 warning-modal .userName {
   color: #b3e06e;
 }
+
 .submit-btn {
   margin-top: 5px;
   margin-bottom: 5px;
@@ -23,3 +50,12 @@ warning-modal .userName {
   padding-left: 7px;
   padding-right: 9px;
 }
+
+#messageTextToCopy {
+  background-color: white;
+  padding: 20px;
+  color: black;
+  margin: 20px;
+
+}
+

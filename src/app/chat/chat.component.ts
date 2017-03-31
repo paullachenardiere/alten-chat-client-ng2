@@ -1,4 +1,5 @@
 import {Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {Observable} from "rxjs";
 import {ChatService} from "../services/chat.service";
 import {Message} from "./model/Message";
@@ -13,7 +14,7 @@ declare let $: any;
 export class ChatComponent implements OnInit, OnDestroy {
   public messages: Message[] = [];
   public message: Message;
-  public newMessage: Message = new Message();
+  public messageContainer: Message = new Message();
   public deletedMessage;
   public messageTextToCopy;
   public errorMessage: any;
@@ -26,11 +27,10 @@ export class ChatComponent implements OnInit, OnDestroy {
   public readonly warningModal: WarningModalComponent;
 
   constructor(public chatService: ChatService) {
+    this.subscribeToSocketStream();
   }
 
-
   ngOnInit(): void {
-    this.subscribeToSocketStream();
     this.chatService.socket.onOpen(
       (session: MessageEventInit) => {
         this.session = session;
@@ -47,9 +47,6 @@ export class ChatComponent implements OnInit, OnDestroy {
     if (this.useSockets) {
       this.getAllMessages();
       this.getActiveSessions();
-      // this.getAllMessagesSocket();
-    } else {
-      // this.getAllMessages();
     }
   }
 
@@ -60,7 +57,9 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   getAllMessages() {
     this.chatService.getAllMessages().subscribe(
-      messages => this.messages = messages,
+      messages => {
+        this.messages = messages;
+      },
       error => this.errorMessage = <any>error
     );
   }
@@ -70,24 +69,28 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.chatService.socket.getDataStream().subscribe(
       (msg) => {
         let newMessage: Message;
-
+        if (msg.data.indexOf(this.chatService.IS_WRITING_PREFIX) > -1) {
+          return;
+        }
         if (msg.data.indexOf(this.chatService.SESSION_ID_PREFIX) > -1) {
           return;
         } else {
           newMessage = JSON.parse(msg.data);
+          // this.chatService.transferCurrentLiveFeed([]);
           console.log("incoming Message", newMessage);
         }
 
         if (newMessage.deleted) {
           this.deletedMessage = newMessage;
           console.log("Message to delete", this.deletedMessage);
-          //TODO check of the user writes on the specific message, than warn that the message will be removed..
           console.log('incoming message sessionId ', newMessage.sessionId);
           console.log('Current SESSION_ID', this.chatService.SESSION_ID);
           if (newMessage.sessionId != this.chatService.SESSION_ID) {
 
             if (this.chatService.isWriting) {
-              this.messageTextToCopy = this.chatService.unsubscribedMessages[this.deletedMessage.id].message || '';
+              this.messageTextToCopy = this.chatService.unsubscribedMessages[this.deletedMessage.id];
+              console.log("this.chatService.isWriting", this.chatService.isWriting);
+              console.log('this.messageTextToCopy = ', this.messageTextToCopy, this.chatService.unsubscribedMessages);
               this.warningModal.show();
             }
           }
@@ -163,7 +166,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
     this.postMessageRest();
     // this.postMessageSocket();
-    this.newMessage = new Message();
+    this.messageContainer = new Message();
     // }
   }
 
@@ -174,16 +177,16 @@ export class ChatComponent implements OnInit, OnDestroy {
 
 
   postMessageSocket() {
-    this.newMessage.userId = 2;
-    this.chatService.postMessageSocket(this.newMessage);
+    this.messageContainer.userId = 2;
+    this.chatService.postMessageSocket(this.messageContainer);
   }
 
   postMessageRest() {
-    if (!this.chatService.messageIsValid(this.newMessage)) {
+    if (!this.chatService.messageIsValid(this.messageContainer)) {
       return;
     }
-    this.newMessage.userId = 1;
-    this.chatService.postMessage(this.newMessage).subscribe(
+    this.messageContainer.userId = 1;
+    this.chatService.postMessage(this.messageContainer).subscribe(
       message => {
         // TODO update message in dom if no sockets is active
       },
@@ -206,7 +209,7 @@ export class ChatComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.newMessage = new Message();
+    this.messageContainer = new Message();
     return this.messages;
   };
 
@@ -235,11 +238,21 @@ export class ChatComponent implements OnInit, OnDestroy {
       $(chatMessage).removeClass('show');
     }, 200);
 
-    // $(chatMessage).addClass('delete-message');
     setTimeout(() => {
       this.messages.splice(index, 1);
+      this.chatService.cleanObservers(id);
       console.log("timeoutId chatMessage", chatMessage);
     }, 500);
     return this.messages;
   }
+
+
+  onFormFocus() {
+    this.chatService.onFormFocus(null, this.messageContainer);
+  }
+
+  onFormBlur() {
+    this.chatService.onFormBlur(null, this.messageContainer);
+  }
+
 }

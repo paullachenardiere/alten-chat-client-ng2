@@ -21,6 +21,8 @@ import {ChatService} from './services/chat.service';
 import {UserService} from "./services/user.service";
 import {WebSocketService} from "./services/webSocket.service";
 import {WarningModalComponent} from "./chat/modals/warningModal.component";
+import { LiveFeedComponent } from './chat/live-feed/live-feed.component';
+import {ReversePipe} from "./pipes.component";
 
 @NgModule({
   declarations: [
@@ -35,14 +37,16 @@ import {WarningModalComponent} from "./chat/modals/warningModal.component";
     DeleteModalComponent,
     UserModalComponent,
     WarningModalComponent,
-    MessageBodyComponent
+    MessageBodyComponent,
+    LiveFeedComponent,
+    ReversePipe,
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
     MomentModule,
-    ClipboardModule
+    ClipboardModule,
   ],
   providers: [ChatService, WebSocketService, UserService],
   bootstrap: [AppComponent]

@@ -9,7 +9,7 @@
   <div class="col-md-10 col-sm-10 col-xs-10 messageRow">
     <div class="row">
       <h5 class="timestamp"><strong>{{message.user.userName}}</strong>
-        <small class="float-right">{{message.timestamp | amTimeAgo}}</small>
+        <small class="float-right timestamp">{{message.timestamp | amTimeAgo}}</small>
       </h5>
     </div>
     <!--<pre>{{message | json}}</pre>-->
@@ -31,6 +31,9 @@
 </div>
 <div class="row message-lower" *ngIf="!message.parentId">
   <span *ngIf="message.edited" class="editedLabel">(edited)</span>
+  <span *ngIf="!showReplies">
+    <live-feed [mainInput]=false [parentId]="message.id"></live-feed>
+  </span>
   <div name="button-bar" class="float-right button-bar">
     <button type="button" class="btn btn-link"
             *ngIf="message && message.replies"
@@ -38,8 +41,8 @@
             ngClass="{{message.replies.length > 0 ? 'replies' : ''}}">
       <span class="comments">{{message.replies.length}} {{message.replies.length > 1 ? 'comments' : 'comment'}} </span>
       <span *ngIf="message.replies.length > 1">
-        <span *ngIf="!showReplies" class="glyphicon glyphicon-chevron-up glyph" aria-label="none"></span>
-        <span *ngIf="showReplies" class="glyphicon glyphicon-chevron-down glyph" aria-label="none"></span>
+        <span *ngIf="!showReplies" class="glyphicon glyphicon-chevron-down glyph" aria-label="none"></span>
+        <span *ngIf="showReplies" class="glyphicon glyphicon-chevron-up glyph" aria-label="none"></span>
       </span>
     </button>
     <button type="button" class="btn btn-link" (click)="onClickEdit(message)">

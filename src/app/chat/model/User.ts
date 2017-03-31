@@ -1,6 +1,21 @@
 export class User  {
-  id: number;
+
   userId: number;
-  userName: string;
+  firstName: string;
+  lastName: string;
   avatar: string;
+  alias: string;
+  email: string;
+  userInfo: string;
+  phone: string;
+  city: string;
+  department: string;
+  team: string;
+  password: string;
+
+
+
+
+
+
 }

@@ -1,4 +1,5 @@
-import {Component, Renderer} from '@angular/core';
+///<reference path="../live-feed/live-feed.component.ts"/>
+import {Component, Renderer, Output} from '@angular/core';
 import {Message} from "../model/Message";
 import {ChatService} from "../../services/chat.service";
 import {ChatComponent} from "../chat.component";
@@ -19,13 +20,12 @@ export class MessageComponent {
   public edit = false;
   public showReplies = false;
   public expandView = false;
-  public messageContainer: Message  = new Message();
+  public messageContainer: Message = new Message();
   public errorMessage: any;
 
   constructor(public chatService: ChatService, public chatComponent: ChatComponent, private rd: Renderer) {
     this.chatComponent = chatComponent;
   }
-
 
   submit(id: number) {
     if (this.chatService.messageIsValid(this.messageContainer)) {
@@ -42,11 +42,9 @@ export class MessageComponent {
     this.chatService.editMessage(message).subscribe(
       message => {
         this.toggleInput = false;
-        return this.chatComponent.updateMessageInDOM(message);
       },
       error => this.errorMessage = <any>error);
   }
-
 
   replyMessage(id: number) {
     this.messageContainer.userId = 1;
@@ -67,10 +65,6 @@ export class MessageComponent {
       error => this.chatComponent.errorMessage = <any>error);
   }
 
-
-  /**
-   * Implemented in DOM
-   */
   deleteMessage(id: number, index: number) {
     this.chatComponent.deleteMessage(id, index);
 
@@ -117,19 +111,11 @@ export class MessageComponent {
   }
 
   onFormFocus(id: number) {
-    this.chatService.isWriting = true;
-    this.chatService.messageContainer = this.messageContainer;
-    this.chatService.unsubscribedMessages[id] = this.messageContainer.message;
+    this.chatService.onFormFocus(id, this.messageContainer);
   }
 
   onFormBlur(id: number) {
-    this.chatService.isWriting = false;
-    this.messageContainer.message = this.messageContainer.message || '';
-    if (!this.messageContainer.message || this.messageContainer.message === "" || this.messageContainer.message.length === 0) {
-      this.chatService.removeMessageFromCache(id);
-    } else {
-      this.chatService.unsubscribedMessages[id] = this.messageContainer.message;
-    }
+    this.chatService.onFormBlur(id, this.messageContainer);
   }
 
   onClickEdit(message) {

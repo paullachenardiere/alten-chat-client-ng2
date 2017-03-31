@@ -1,5 +1,5 @@
 <div class="chatMessage show" id="{{message.id}}"
-     ngClass="{{showReplies && message.replies.length > 0 ? 'expand' : ''}}">
+     ngClass="{{(showReplies && message.replies.length > 0) || toggleInput ? 'expand' : ''}}">
 
   <!--<pre>{{message | json}}</pre>-->
 
@@ -7,14 +7,14 @@
 
   <div [hidden]="!expandView" class="repliesContainer">
 
-    <div [hidden]="!showReplies" >
-    <div *ngFor="let message of message.replies">
-      <message-body class="" [message]="message"></message-body>
+    <div [hidden]="!showReplies">
+      <div *ngFor="let message of message.replies">
+        <message-body class="" [message]="message"></message-body>
+      </div>
     </div>
-  </div>
 
-
-    <div class="" *ngIf="toggleInput">
+    <div *ngIf="toggleInput" >
+      <live-feed [mainInput]=false [parentId]="message.id"></live-feed>
       <form ngForm>
 
         <textarea class="form-control" rows="3" name="message" required
@@ -23,7 +23,6 @@
                   [(ngModel)]="messageContainer.message"
                   placeholder="add reply..."
                   (keydown.enter)="onEnter(message.id,$event)">
-
       </textarea>
         <button type="submit" class="btn btn-success btn-sm float-right submit-btn"
                 [disabled]="!messageContainer.message"

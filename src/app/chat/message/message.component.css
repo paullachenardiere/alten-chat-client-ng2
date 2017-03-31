@@ -8,13 +8,13 @@
   opacity: 0.1;
   overflow: hidden;
   margin-bottom: 0;
-  border: 1px solid #b1b1b1;
+  /*border: 1px solid #b1b1b1;*/
   border-radius: 3px;
   padding-right: 15px;
 }
 
 .chatMessage.show {
-  transition: all 1.4s ease-out;
+  transition: all 0.1s ease-in-out;
   transform: none;
   opacity: 1;
   height: inherit;
@@ -24,15 +24,16 @@
 }
 
 .chatMessage.show.expand {
-  box-shadow: 1px 1px 3px rgb(156, 156, 156);
+  box-shadow: 1px 2px 8px rgb(0, 0, 0);
   background-color: #f7f7f7;
+  border: none;
 }
 
 .avatar-box {
 }
 
 .avatar {
-  opacity: 0.65;
+  opacity: 0.75;
   margin-top: 4px;
   margin-left: -11px;
   margin-bottom: 2px;
@@ -80,10 +81,13 @@
 .timestamp {
   padding-right: 6px;
   margin-bottom: 2px;
+  color: #85afd4;
 }
 
 .message {
-  padding-right: 40px;
+  /*padding-right: 5px;*/
+  padding-right: 10px;
+  font-size: 1.2em;
 }
 
 p.message.overflow {
@@ -178,14 +182,27 @@ p.message.overflow > span > button#viewMore {
 }
 
 .editedLabel {
-  font-size: 0.8em;
-  margin-left: 9px;
+  font-size: 0.7em;
   font-style: italic;
   color: #337ab7;
+  margin-left: 9px;
+  margin-top: 6px;
+  float: left;
 }
+
+live-feed {
+  float: left;
+  height: 26px;
+  width: 8em;
+  font-size: 11px;
+  padding-top: 4px;
+  margin-left: 16px;
+}
+
 
 .form-control {
   margin-top: 10px;
+
 }
 
 .submit-btn {

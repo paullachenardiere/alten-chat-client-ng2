@@ -1,0 +1,8 @@
+<span class="feed-container">
+    <span class="glyphicon glyphicon-pencil glyph writeAnimation" aria-label="liveFeed"
+          *ngIf="liveFeed && liveFeed.length > 0">
+    </span>
+    <div class="live-feed">
+      <span id="writer" *ngFor="let writer of liveFeed">{{writer.sessionId}}</span>
+    </div>
+</span>

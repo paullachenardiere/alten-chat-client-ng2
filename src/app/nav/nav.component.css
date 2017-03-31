@@ -1,6 +1,8 @@
 .navbar {
   background-color: #404040;
-  /*background-color: #2f1114;*/
+  border-radius: 0;
+  border: none;
+  margin-bottom: 0;
 }
 
 .settings span {
